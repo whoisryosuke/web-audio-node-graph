@@ -23,8 +23,9 @@ const Gain = ({ id, data }: Props) => {
           <input
             className="nodrag"
             type="range"
-            min="10"
-            max="1000"
+            min="0"
+            max="1"
+            step="0.01"
             value={data.gain}
             onChange={setGain}
           />

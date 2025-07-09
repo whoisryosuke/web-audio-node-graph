@@ -52,6 +52,27 @@ export function connectAudioNodes(source: string, target: string) {
   sourceNode.connect(targetNode);
 }
 
+export function updateAudioNode(id: string, data: any) {
+  const audioNode = audioNodes.get(id);
+  if (!audioNode) return;
+
+  // Loop through all the node properties we want to sync
+  for (const param in data) {
+    // Check if the audio node contains the property
+    if (param in audioNode) {
+      // Massage the types to make Typescript happy
+      const audioParam = param as keyof AudioNode;
+      // And then handle AudioParam vs regular property
+      if (audioNode[audioParam] instanceof AudioParam) {
+        audioNode[audioParam].value = data[param];
+      } else {
+        // @ts-ignore We literally check above here
+        audioNode[param] = data[param];
+      }
+    }
+  }
+}
+
 export function playAudio() {
   context.resume();
 }

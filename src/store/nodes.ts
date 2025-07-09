@@ -15,6 +15,7 @@ import {
   connectAudioNodes,
   createAudioNode,
   removeAudioNode,
+  updateAudioNode,
 } from "../services/audio/audio-graph";
 
 export interface NodeStoreState {
@@ -93,6 +94,7 @@ export const useNodeStore = create<NodeStoreState>()(
     },
 
     updateNode: (id: string, data: Partial<Node>) => {
+      updateAudioNode(id, data);
       set((state) => ({
         nodes: state.nodes.map((node) =>
           node.id === id ? { ...node, data: { ...node.data, ...data } } : node
