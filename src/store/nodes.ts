@@ -17,14 +17,30 @@ export interface NodeStoreState {
   onNodesChange: (changes: NodeChange<Node>[]) => void;
   onEdgesChange: (changes: EdgeChange<Edge>[]) => void;
   addEdge: (data: Partial<Edge>) => void;
+  updateNode: (id: string, data: Partial<Node>) => void;
 }
 
 export const useNodeStore = create<NodeStoreState>()(
   devtools((set) => ({
     nodes: [
-      { id: "a", data: { label: "oscillator" }, position: { x: 0, y: 0 } },
-      { id: "b", data: { label: "gain" }, position: { x: 50, y: 50 } },
-      { id: "c", data: { label: "output" }, position: { x: -50, y: 100 } },
+      {
+        id: "a",
+        type: "osc",
+        data: { label: "oscillator" },
+        position: { x: 0, y: 0 },
+      },
+      {
+        id: "b",
+        type: "gain",
+        data: { label: "gain" },
+        position: { x: 50, y: 50 },
+      },
+      {
+        id: "c",
+        type: "output",
+        data: { label: "output" },
+        position: { x: -50, y: 100 },
+      },
     ],
     edges: [],
 
@@ -44,6 +60,14 @@ export const useNodeStore = create<NodeStoreState>()(
       const edge = { id, ...data } as Edge;
 
       set((state) => ({ edges: [edge, ...state.edges] }));
+    },
+
+    updateNode: (id: string, data: Partial<Node>) => {
+      set((state) => ({
+        nodes: state.nodes.map((node) =>
+          node.id === id ? { ...node, data: { ...node.data, ...data } } : node
+        ),
+      }));
     },
   }))
 );

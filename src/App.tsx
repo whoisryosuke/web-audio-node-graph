@@ -1,13 +1,15 @@
 import { Background, ReactFlow } from "@xyflow/react";
 import { useNodeStore, type NodeStoreState } from "./store/nodes";
+import ALL_NODE_TYPES from "./nodes";
 
-const selector = (store: NodeStoreState) => ({
-  nodes: store.nodes,
-  edges: store.edges,
-  onNodesChange: store.onNodesChange,
-  onEdgesChange: store.onEdgesChange,
-  addEdge: store.addEdge,
-});
+// const selector = (store: NodeStoreState) => ({
+//   nodes: store.nodes,
+//   edges: store.edges,
+//   onNodesChange: store.onNodesChange,
+//   onEdgesChange: store.onEdgesChange,
+//   addEdge: store.addEdge,
+// });
+
 function App() {
   const { nodes, edges, onNodesChange, onEdgesChange, addEdge } =
     useNodeStore();
@@ -20,6 +22,7 @@ function App() {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={addEdge}
+        nodeTypes={ALL_NODE_TYPES}
       >
         <Background />
       </ReactFlow>
