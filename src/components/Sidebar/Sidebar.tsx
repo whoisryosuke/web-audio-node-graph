@@ -1,5 +1,6 @@
 import React from "react";
 import AddNodeWidget from "./widgets/AddNodeWidget";
+import { Heading } from "@chakra-ui/react";
 
 type Props = {};
 
@@ -16,7 +17,7 @@ const Sidebar = (props: Props) => {
       }}
     >
       <div style={{ padding: "2rem" }}>
-        <h1>Audio Node Graph</h1>
+        <Heading size="2xl">Audio Node Graph</Heading>
 
         <AddNodeWidget />
       </div>

@@ -1,6 +1,8 @@
 import React, { useRef } from "react";
 import ALL_NODE_TYPES, { type CustomNodeTypesNames } from "../../../nodes";
 import { useNodeStore } from "../../../store/nodes";
+import { Button, Heading, Stack } from "@chakra-ui/react";
+import Select from "../../ui/select";
 
 type Props = {};
 
@@ -11,16 +13,21 @@ const AddNodeWidget = (props: Props) => {
     if (!selectRef.current) return;
     addNode(selectRef.current.value as CustomNodeTypesNames, {});
   };
+
+  const options = Object.keys(ALL_NODE_TYPES).map((nodeType) => ({
+    value: nodeType,
+    label: nodeType,
+  }));
   return (
-    <div>
-      <h2>Add Node</h2>
-      <select ref={selectRef}>
-        {Object.keys(ALL_NODE_TYPES).map((nodeType) => (
-          <option value={nodeType}>{nodeType}</option>
-        ))}
-      </select>
-      <button onClick={handleAddNode}>Add Node</button>
-    </div>
+    <Stack>
+      <Heading size="md">Add Node</Heading>
+      <Select
+        ref={selectRef}
+        options={options}
+        placeholder="Select a node type..."
+      />
+      <Button onClick={handleAddNode}>Add Node</Button>
+    </Stack>
   );
 };
 
