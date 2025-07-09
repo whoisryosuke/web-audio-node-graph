@@ -1,7 +1,10 @@
-import { Background, ReactFlow } from "@xyflow/react";
+import { Background, Controls, ReactFlow } from "@xyflow/react";
 import { useNodeStore, type NodeStoreState } from "./store/nodes";
 import ALL_NODE_TYPES from "./nodes";
 import Sidebar from "./components/Sidebar/Sidebar";
+import Hotkeys from "./components/Hotkeys";
+import TrackMouse from "./components/TrackMouse";
+import NodePopup from "./components/NodePopup/NodePopup";
 
 // const selector = (store: NodeStoreState) => ({
 //   nodes: store.nodes,
@@ -25,9 +28,13 @@ function App() {
         onConnect={addEdge}
         nodeTypes={ALL_NODE_TYPES}
       >
-        <Background />
+        <Background color="#555" />
+        {/* <Controls /> */}
       </ReactFlow>
-      <Sidebar />
+      {/* <Sidebar /> */}
+      <Hotkeys />
+      <TrackMouse />
+      <NodePopup />
     </>
   );
 }
