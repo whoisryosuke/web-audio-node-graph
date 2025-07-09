@@ -16,7 +16,7 @@ const Gain = ({ id, data }: Props) => {
   return (
     <div>
       <div style={{ display: "flex", flexDirection: "column" }}>
-        <p>Oscillator Node</p>
+        <p>Gain Node</p>
 
         <label>
           <span>Gain</span>
@@ -32,8 +32,8 @@ const Gain = ({ id, data }: Props) => {
         </label>
       </div>
 
-      <Handle type="source" position={Position.Left} />
-      <Handle type="target" position={Position.Right} />
+      <Handle type="source" position={Position.Right} />
+      <Handle type="target" position={Position.Left} />
     </div>
   );
 };

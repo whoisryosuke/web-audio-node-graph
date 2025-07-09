@@ -8,4 +8,6 @@ const ALL_NODE_TYPES = {
   output: Output,
 };
 
+export type CustomNodeTypesNames = keyof typeof ALL_NODE_TYPES;
+
 export default ALL_NODE_TYPES;

@@ -1,6 +1,7 @@
 import { Background, ReactFlow } from "@xyflow/react";
 import { useNodeStore, type NodeStoreState } from "./store/nodes";
 import ALL_NODE_TYPES from "./nodes";
+import Sidebar from "./components/Sidebar/Sidebar";
 
 // const selector = (store: NodeStoreState) => ({
 //   nodes: store.nodes,
@@ -26,6 +27,7 @@ function App() {
       >
         <Background />
       </ReactFlow>
+      <Sidebar />
     </>
   );
 }
