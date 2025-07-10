@@ -7,6 +7,9 @@ import NodeContent from "../components/nodes/NodeContent";
 import NodeInputField from "../components/nodes/NodeInputField";
 import Slider from "../components/ui/Slider";
 import NodeHandle from "../components/nodes/NodeHandle";
+import { Box, Text } from "@chakra-ui/react";
+import NodeInput from "../components/nodes/NodeInput";
+import NodeOutput from "../components/nodes/NodeOutput";
 
 type Props = {
   id: string;
@@ -21,8 +24,14 @@ const Gain = ({ id, data }: Props) => {
   return (
     <NodeContainer>
       <NodeHeading color="purple">Gain Node</NodeHeading>
+      <NodeInput />
+      <NodeOutput />
       <NodeContent>
-        <NodeInputField label="Gain" helper={`${data.gain}`}>
+        <NodeInputField
+          label="Gain"
+          helper={`${data.gain}`}
+          position="relative"
+        >
           <Slider
             className="nodrag"
             min={0}
@@ -32,11 +41,9 @@ const Gain = ({ id, data }: Props) => {
             value={[data.gain]}
             onValueChange={setGain}
           />
+          <NodeHandle type="target" position={Position.Left} id="gain" />
         </NodeInputField>
       </NodeContent>
-
-      <NodeHandle type="source" position={Position.Right} />
-      <NodeHandle type="target" position={Position.Left} />
     </NodeContainer>
   );
 };

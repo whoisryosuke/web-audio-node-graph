@@ -86,9 +86,20 @@ export const useNodeStore = create<NodeStoreState>()(
       const id = nanoid(6);
       const edge = { id, ...data } as Edge;
 
-      console.log("connecting nodes", edge.source, edge.target);
+      console.log(
+        "connecting nodes",
+        edge.source,
+        edge.target,
+        edge.sourceHandle,
+        edge.targetHandle
+      );
 
-      connectAudioNodes(edge.source, edge.target);
+      connectAudioNodes(
+        edge.source,
+        edge.target,
+        edge.sourceHandle,
+        edge.targetHandle
+      );
 
       set((state) => ({ edges: [edge, ...state.edges] }));
     },

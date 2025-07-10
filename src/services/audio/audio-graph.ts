@@ -48,20 +48,50 @@ export function removeAudioNode(id: string) {
   audioNodes.delete(id);
 }
 
-export function connectAudioNodes(source: string, target: string) {
+export function connectAudioNodes(
+  source: string,
+  target: string,
+  sourceHandle: string,
+  targetHandle: string
+) {
   const sourceNode = audioNodes.get(source);
   const targetNode = audioNodes.get(target);
   console.log("connecting nodes", "source:", source, "target:", target);
   console.log("connecting nodes", "source:", sourceNode, "target:", targetNode);
 
+  // Check if we have a source node - kinda critical for everything
   if (!sourceNode) return;
+
+  // Handle connections to node parameters vs nodes (aka "handles")
+  let sourceRef = sourceNode;
+  if (sourceHandle) {
+    if (sourceHandle in sourceNode) {
+      console.log("source handle found", sourceNode, sourceHandle);
+    }
+  }
+  let targetRef: AudioNode | AudioParam = targetNode;
+  if (targetHandle && targetNode) {
+    if (targetHandle in targetNode) {
+      const audioParam = targetHandle as keyof AudioNode;
+      console.log(
+        "target handle found",
+        targetNode,
+        targetHandle,
+        targetNode[audioParam]
+      );
+      targetRef = targetNode[audioParam];
+    }
+  }
+
   // If we connect to an output node, connect to the audio context output
   if (target == "output") {
     return sourceNode.connect(context.destination);
   }
 
+  // Check if we have a target node
   if (!targetNode) return;
-  sourceNode.connect(targetNode);
+  // Connect to target node
+  sourceNode.connect(targetRef);
 }
 
 export function updateAudioNode(id: string, data: any) {

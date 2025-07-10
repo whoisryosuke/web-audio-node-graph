@@ -17,7 +17,14 @@ const NodeHeading = ({
 }: PropsWithChildren<Props>) => {
   const bg = useNodeHeaderBackground(color);
   return (
-    <Box bg={bg} py={2} px={4} {...props}>
+    <Box
+      bg={bg}
+      py={2}
+      px={4}
+      borderTopLeftRadius={"lg"}
+      borderTopRightRadius={"lg"}
+      {...props}
+    >
       <Heading size="sm">{children}</Heading>
     </Box>
   );

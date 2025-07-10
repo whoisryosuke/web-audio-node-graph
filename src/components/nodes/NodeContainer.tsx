@@ -15,7 +15,6 @@ const NodeContainer = (props: PropsWithChildren) => {
       borderWidth={2}
       borderStyle="solid"
       borderRadius={"lg"}
-      overflow="hidden"
       {...props}
     />
   );

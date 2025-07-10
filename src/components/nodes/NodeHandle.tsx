@@ -15,8 +15,8 @@ type StyledProps = {
 const StyledHandle = styled(Handle)<StyledProps>`
   width: 16px;
   height: 16px;
-  background: var(--chakra-colors-gray-800);
-  border-color: var(--chakra-colors-gray-700);
+  background: var(--chakra-colors-gray-700);
+  border-color: var(--chakra-colors-gray-500);
 
   &:hover {
     background: var(--chakra-colors-blue-600);
