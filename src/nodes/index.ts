@@ -3,12 +3,14 @@ import Oscillator from "./Oscillator";
 import Output from "./Output";
 import Analyser from "./Analyser";
 import Delay from "./Delay";
+import Sample from "./Sample";
 
 const ALL_NODE_TYPES = {
   osc: Oscillator,
   gain: Gain,
   analyser: Analyser,
   delay: Delay,
+  sample: Sample,
   output: Output,
 };
 const { output: _, ...safeNodeTypes } = {
@@ -24,6 +26,7 @@ export const ALL_SAFE_NODE_NAMES: Record<
   gain: "Gain Node",
   analyser: "Analyser Node",
   delay: "Delay Node",
+  sample: "Sample Node",
 };
 
 export type CustomNodeTypesNames = keyof typeof ALL_SAFE_NODE_TYPES;

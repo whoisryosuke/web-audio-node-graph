@@ -1,5 +1,6 @@
 import type { Edge } from "@xyflow/react";
 import type { CustomNodeTypesNames } from "../../nodes";
+import { useNodeStore } from "../../store/nodes";
 
 const context = new AudioContext();
 const audioNodes = new Map<string, AudioNode>();
@@ -35,6 +36,12 @@ const createDelayNode = (id: string) => {
   audioNodes.set(id, node);
 };
 
+const createSampleNode = (id: string) => {
+  const node = context.createBufferSource();
+
+  audioNodes.set(id, node);
+};
+
 export function createAudioNode(type: CustomNodeTypesNames, id: string) {
   switch (type) {
     case "osc":
@@ -49,7 +56,10 @@ export function createAudioNode(type: CustomNodeTypesNames, id: string) {
     case "delay":
       createDelayNode(id);
       break;
-    case "output":
+    case "sample":
+      createSampleNode(id);
+      break;
+    default:
       break;
   }
 }
@@ -82,8 +92,8 @@ function getAudioParamsFromHandles(
 export function connectAudioNodes(
   source: string,
   target: string,
-  sourceHandle: string,
-  targetHandle: string
+  sourceHandle: string | null,
+  targetHandle: string | null | undefined
 ) {
   const sourceNode = audioNodes.get(source);
   const targetNode = audioNodes.get(target);
@@ -146,7 +156,41 @@ export function disconnectNodes(
 }
 
 export function playAudio() {
+  // Resume the audio context if needed
   context.resume();
+
+  // Nodes like oscillators play by default since we start them initially
+
+  // But samples need to be played individually
+  const updateNodes = [];
+  audioNodes.forEach((audioNode, audioNodeKey) => {
+    // Check if it's a sample and play it
+    if (audioNode instanceof AudioBufferSourceNode) {
+      audioNode.start();
+
+      // Now it get's complicated, we need to re-create this node
+      // Audio buffers don't allow for replay, so we recreate each playback
+      const newNode = context.createBufferSource();
+      newNode.buffer = audioNode.buffer;
+
+      // Update the cache with new audio node
+      audioNodes.set(audioNodeKey, newNode);
+
+      // Reconnect node
+      // Find all edges and reconnect this node to any targets
+      const { edges } = useNodeStore.getState();
+      const foundEdges = edges.filter((edge) => edge.source == audioNodeKey);
+      foundEdges.forEach((foundEdge) => {
+        // Connect new node to target from existing edge
+        connectAudioNodes(
+          audioNodeKey,
+          foundEdge.target,
+          null,
+          foundEdge.targetHandle
+        );
+      });
+    }
+  });
 }
 
 export function getAudioNode(id: string) {

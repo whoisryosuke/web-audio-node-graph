@@ -8,18 +8,23 @@ import NodeContainer from "../components/nodes/NodeContainer";
 import NodeContent from "../components/nodes/NodeContent";
 import NodeHeading from "../components/nodes/NodeHeading";
 import NodeInput from "../components/nodes/NodeInput";
+import { playAudio } from "../services/audio/audio-graph";
 
 type Props = BaseNode;
 
 const Output = ({ id, data }: Props) => {
   const bg = useColorModeValue("gray.100", "gray.700");
+
+  const handlePlayAudio = () => {
+    playAudio();
+  };
   return (
     <NodeContainer>
       <NodeHeading color="gray">Output</NodeHeading>
       <NodeInput name="" />
       <NodeContent>
         <VStack>
-          <Button colorPalette="blue" width="100%">
+          <Button colorPalette="blue" width="100%" onClick={handlePlayAudio}>
             Play Audio
           </Button>
         </VStack>
