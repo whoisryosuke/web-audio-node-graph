@@ -7,6 +7,7 @@ import { useColorModeValue } from "../components/ui/color-mode";
 import NodeContainer from "../components/nodes/NodeContainer";
 import NodeContent from "../components/nodes/NodeContent";
 import NodeHeading from "../components/nodes/NodeHeading";
+import NodeInput from "../components/nodes/NodeInput";
 
 type Props = BaseNode;
 
@@ -15,10 +16,12 @@ const Output = ({ id, data }: Props) => {
   return (
     <NodeContainer>
       <NodeHeading color="gray">Output</NodeHeading>
+      <NodeInput name="" />
       <NodeContent>
-        <Handle type="target" position={Position.Left} />
         <VStack>
-          <Button>Play Audio</Button>
+          <Button colorPalette="blue" width="100%">
+            Play Audio
+          </Button>
         </VStack>
       </NodeContent>
     </NodeContainer>
