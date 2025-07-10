@@ -1,5 +1,8 @@
 import React, { useRef } from "react";
-import ALL_NODE_TYPES, { type CustomNodeTypesNames } from "../../../nodes";
+import ALL_NODE_TYPES, {
+  ALL_SAFE_NODE_TYPES,
+  type CustomNodeTypesNames,
+} from "../../../nodes";
 import { useNodeStore } from "../../../store/nodes";
 import { Button, Heading, Stack } from "@chakra-ui/react";
 import Select from "../../ui/select";
@@ -14,7 +17,7 @@ const AddNodeWidget = (props: Props) => {
     addNode(selectRef.current.value as CustomNodeTypesNames, {});
   };
 
-  const options = Object.keys(ALL_NODE_TYPES).map((nodeType) => ({
+  const options = Object.keys(ALL_SAFE_NODE_TYPES).map((nodeType) => ({
     value: nodeType,
     label: nodeType,
   }));

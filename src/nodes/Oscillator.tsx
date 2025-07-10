@@ -1,6 +1,14 @@
 import { Handle, Position, type Node } from "@xyflow/react";
 import React from "react";
 import { useNodeStore } from "../store/nodes";
+import NodeContainer from "../components/nodes/NodeContainer";
+import NodeHeading from "../components/nodes/NodeHeading";
+import NodeContent from "../components/nodes/NodeContent";
+import { Field, Input } from "@chakra-ui/react";
+import Slider from "../components/ui/Slider";
+import NodeInputField from "../components/nodes/NodeInputField";
+import Select from "../components/ui/select";
+import NodeHandle from "../components/nodes/NodeHandle";
 
 type Props = {
   id: string;
@@ -10,42 +18,50 @@ type Props = {
 const Oscillator = ({ id, data }: Props) => {
   const { updateNode } = useNodeStore();
 
-  const setFrequency = (e: React.ChangeEvent<HTMLInputElement>) =>
-    updateNode(id, { frequency: +e.target.value });
-  const setType = (e: React.ChangeEvent<HTMLSelectElement>) =>
-    updateNode(id, { type: e.target.value });
+  const setFrequency = (e: any) => {
+    console.log("set freq", e);
+    updateNode(id, { frequency: +e.value });
+  };
+  const setType = (e: any) => {
+    updateNode(id, { type: e.value });
+  };
 
+  const options = ["sine", "triangle", "sawtooth", "square"].map(
+    (nodeType) => ({
+      value: nodeType,
+      label: nodeType,
+    })
+  );
+
+  console.log("node data", data);
   return (
-    <div>
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <p>Oscillator Node</p>
-
-        <label>
-          <span>Frequency</span>
-          <input
+    <NodeContainer>
+      <NodeHeading>Oscillator Node</NodeHeading>
+      <NodeContent>
+        <NodeInputField label="Frequency" helper={`${data.frequency}Hz`}>
+          <Slider
             className="nodrag"
-            type="range"
-            min="10"
-            max="1000"
-            value={data.frequency}
-            onChange={setFrequency}
+            min={10}
+            max={1000}
+            value={[data.frequency]}
+            onValueChange={setFrequency}
           />
-          <span>{data.frequency}Hz</span>
-        </label>
+        </NodeInputField>
 
-        <label>
-          <span>Waveform</span>
-          <select className="nodrag" value={data.type} onChange={setType}>
-            <option value="sine">sine</option>
-            <option value="triangle">triangle</option>
-            <option value="sawtooth">sawtooth</option>
-            <option value="square">square</option>
-          </select>
-        </label>
-      </div>
+        <NodeInputField label="Waveform">
+          <Select
+            className="nodrag"
+            value={data.type}
+            defaultValue={data.type}
+            options={options}
+            onValueChange={setType}
+            placeholder="Select a waveform type..."
+          />
+        </NodeInputField>
+      </NodeContent>
 
-      <Handle type="source" position={Position.Right} />
-    </div>
+      <NodeHandle type="source" position={Position.Right} />
+    </NodeContainer>
   );
 };
 

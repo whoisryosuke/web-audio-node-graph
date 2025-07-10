@@ -3,10 +3,11 @@ import {
   Select as ChakraSelect,
   type ListCollection,
   createListCollection,
+  type SliderRootProps,
 } from "@chakra-ui/react";
 import { useMemo } from "react";
 
-type Props = {
+type Props = SliderRootProps & {
   options: {
     value: string;
     label: string;
@@ -15,7 +16,7 @@ type Props = {
   placeholder: string;
 };
 
-const Select = ({ options, name, placeholder }: Props) => {
+const Select = ({ options, name, placeholder, ...props }: Props) => {
   const collection = useMemo(
     () =>
       createListCollection({
@@ -25,7 +26,12 @@ const Select = ({ options, name, placeholder }: Props) => {
   );
 
   return (
-    <ChakraSelect.Root collection={collection} size="sm" width="320px">
+    <ChakraSelect.Root
+      collection={collection}
+      size="sm"
+      width="100%"
+      {...props}
+    >
       <ChakraSelect.HiddenSelect />
       <ChakraSelect.Label>{name}</ChakraSelect.Label>
       <ChakraSelect.Control>

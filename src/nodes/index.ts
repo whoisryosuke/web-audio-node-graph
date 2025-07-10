@@ -7,6 +7,10 @@ const ALL_NODE_TYPES = {
   gain: Gain,
   output: Output,
 };
+const { output: _, ...safeNodeTypes } = {
+  ...ALL_NODE_TYPES,
+};
+export const ALL_SAFE_NODE_TYPES = safeNodeTypes;
 
 export type CustomNodeTypesNames = keyof typeof ALL_NODE_TYPES;
 

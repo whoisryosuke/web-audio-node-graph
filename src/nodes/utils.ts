@@ -7,10 +7,10 @@ const DEFAULT_NODE_PROPERTIES = {
 };
 
 function createOscillatorNode() {
-  return { label: "Oscillator" };
+  return { label: "Oscillator", frequency: 420, type: "sine" };
 }
 function createGainNode() {
-  return { label: "Gain" };
+  return { label: "Gain", gain: 0.42 };
 }
 
 export function createNode(type: CustomNodeTypesNames) {

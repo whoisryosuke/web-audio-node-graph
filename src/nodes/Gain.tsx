@@ -1,6 +1,12 @@
 import { Handle, Position, type Node } from "@xyflow/react";
 import React from "react";
 import { useNodeStore } from "../store/nodes";
+import NodeContainer from "../components/nodes/NodeContainer";
+import NodeHeading from "../components/nodes/NodeHeading";
+import NodeContent from "../components/nodes/NodeContent";
+import NodeInputField from "../components/nodes/NodeInputField";
+import Slider from "../components/ui/Slider";
+import NodeHandle from "../components/nodes/NodeHandle";
 
 type Props = {
   id: string;
@@ -10,32 +16,28 @@ type Props = {
 const Gain = ({ id, data }: Props) => {
   const { updateNode } = useNodeStore();
 
-  const setGain = (e: React.ChangeEvent<HTMLInputElement>) =>
-    updateNode(id, { gain: +e.target.value });
+  const setGain = (e: any) => updateNode(id, { gain: +e.value });
 
   return (
-    <div>
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <p>Gain Node</p>
-
-        <label>
-          <span>Gain</span>
-          <input
+    <NodeContainer>
+      <NodeHeading color="purple">Gain Node</NodeHeading>
+      <NodeContent>
+        <NodeInputField label="Gain" helper={`${data.gain}`}>
+          <Slider
             className="nodrag"
-            type="range"
-            min="0"
-            max="1"
-            step="0.01"
-            value={data.gain}
-            onChange={setGain}
+            min={0}
+            max={1}
+            step={0.01}
+            defaultValue={[data.gain]}
+            value={[data.gain]}
+            onValueChange={setGain}
           />
-          <span>{data.gain}</span>
-        </label>
-      </div>
+        </NodeInputField>
+      </NodeContent>
 
-      <Handle type="source" position={Position.Right} />
-      <Handle type="target" position={Position.Left} />
-    </div>
+      <NodeHandle type="source" position={Position.Right} />
+      <NodeHandle type="target" position={Position.Left} />
+    </NodeContainer>
   );
 };
 
