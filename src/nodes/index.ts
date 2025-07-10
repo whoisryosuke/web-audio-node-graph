@@ -2,11 +2,13 @@ import Gain from "./Gain";
 import Oscillator from "./Oscillator";
 import Output from "./Output";
 import Analyser from "./Analyser";
+import Delay from "./Delay";
 
 const ALL_NODE_TYPES = {
   osc: Oscillator,
   gain: Gain,
   analyser: Analyser,
+  delay: Delay,
   output: Output,
 };
 const { output: _, ...safeNodeTypes } = {

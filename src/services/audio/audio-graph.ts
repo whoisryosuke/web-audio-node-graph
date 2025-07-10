@@ -28,6 +28,12 @@ const createAnalyserNode = (id: string) => {
   audioNodes.set(id, analyser);
 };
 
+const createDelayNode = (id: string) => {
+  const node = context.createDelay();
+
+  audioNodes.set(id, node);
+};
+
 export function createAudioNode(type: CustomNodeTypesNames, id: string) {
   switch (type) {
     case "osc":
@@ -38,6 +44,9 @@ export function createAudioNode(type: CustomNodeTypesNames, id: string) {
       break;
     case "analyser":
       createAnalyserNode(id);
+      break;
+    case "delay":
+      createDelayNode(id);
       break;
     case "output":
       break;
@@ -63,10 +72,11 @@ export function connectAudioNodes(
   if (!sourceNode) return;
 
   // Handle connections to node parameters vs nodes (aka "handles")
-  let sourceRef = sourceNode;
+  let sourceRef: AudioNode | AudioParam = sourceNode;
   if (sourceHandle) {
     if (sourceHandle in sourceNode) {
       console.log("source handle found", sourceNode, sourceHandle);
+      sourceRef = sourceNode[sourceHandle];
     }
   }
   let targetRef: AudioNode | AudioParam = targetNode;
@@ -85,13 +95,14 @@ export function connectAudioNodes(
 
   // If we connect to an output node, connect to the audio context output
   if (target == "output") {
+    // This should never be an input, since audio params don't output properly
     return sourceNode.connect(context.destination);
   }
 
   // Check if we have a target node
   if (!targetNode) return;
   // Connect to target node
-  sourceNode.connect(targetRef);
+  sourceRef.connect(targetRef);
 }
 
 export function updateAudioNode(id: string, data: any) {

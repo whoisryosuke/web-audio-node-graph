@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { getAudioNode } from "../../services/audio/audio-graph";
 import map from "../../utils/map";
 import LineGraph from "../ui/viz/LineGraph";
+import BarGraph from "../ui/viz/BarGraph";
 
 const DEFAULT_AUDIO_HEIGHT = 128;
 
@@ -23,10 +24,13 @@ const Waveform = ({ id }: Props) => {
 
     // Update waveform data as a ref
     if (dataArray.current.length == 0) {
+      // Set initial config
+      // We don't need a lot of samples. 256 = how many bars we'll have
+      analyser.fftSize = 256;
       const newBufferLength = analyser.frequencyBinCount;
       dataArray.current = new Uint8Array(newBufferLength);
     }
-    analyser.getByteTimeDomainData(dataArray.current);
+    analyser.getByteFrequencyData(dataArray.current);
     // Force React update
     setTime(delta);
 
@@ -42,13 +46,9 @@ const Waveform = ({ id }: Props) => {
   }, []);
 
   const graph: number[] = [];
-  dataArray.current.forEach((data) =>
-    graph.push(
-      map(data, DEFAULT_AUDIO_HEIGHT - 20, DEFAULT_AUDIO_HEIGHT + 20, 0, 1)
-    )
-  );
+  dataArray.current.forEach((data) => graph.push(data));
 
-  return <LineGraph data={graph} color={"blue"} width={400} height={300} />;
+  return <BarGraph data={graph} color={"blue"} width={400} height={300} />;
 };
 
 export default Waveform;

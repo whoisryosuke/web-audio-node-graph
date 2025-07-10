@@ -1,8 +1,7 @@
 import { type ComponentProps, useCallback, useEffect, useRef } from "react";
 import styled from "@emotion/styled";
-import { useColorMode, useColorModeValue } from "./color-mode";
 import { Box, type BoxProps, type ColorPalette } from "@chakra-ui/react";
-import map from "../../utils/map";
+import { useColorMode } from "../color-mode";
 
 // Assuming numbers are 0-1
 type GraphData = number[];
@@ -12,7 +11,7 @@ type Props = BoxProps & {
   color?: ColorPalette;
 };
 
-const LineGraph = ({ data = [], color = "blue", ...props }: Props) => {
+const BarGraph = ({ data = [], color = "blue", ...props }: Props) => {
   const { colorMode } = useColorMode();
   const bgColor = colorMode === "dark" ? "#111" : "#EEE";
   const lineColor = colorMode === "dark" ? "blue" : "blue";
@@ -36,19 +35,15 @@ const LineGraph = ({ data = [], color = "blue", ...props }: Props) => {
 
       ctx.beginPath();
       ctx.lineWidth = 1.5;
-      ctx.strokeStyle = lineColor;
-      for (let i = 0; i < canvasWidth; i++) {
-        const index = Math.floor(map(i, 0, canvasWidth, 0, data.length));
-        const x = i;
-        const y = (data[index] * canvasHeight) / 2 + canvasHeight / 4;
-        if (i === 0) {
-          ctx.moveTo(x, y);
-        } else {
-          ctx.lineTo(x, y);
-        }
+      ctx.fillStyle = lineColor;
+      const barWidth = (canvasWidth / data.length) * 2.5;
+      for (let i = 0; i < data.length; i++) {
+        const barHeight = data[i] / 2;
+        const x = barWidth * i;
+
+        ctx.fillRect(x, canvasHeight - barHeight / 2, barWidth, barHeight);
       }
 
-      ctx.stroke();
       // this.animationFrameRef = requestAnimationFrame(this.draw.bind(this));
     },
     [data]
@@ -61,4 +56,4 @@ const LineGraph = ({ data = [], color = "blue", ...props }: Props) => {
   return <Box as="canvas" ref={canvasRef} {...props} />;
 };
 
-export default LineGraph;
+export default BarGraph;

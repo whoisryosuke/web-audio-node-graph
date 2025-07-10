@@ -19,7 +19,6 @@ const Oscillator = ({ id, data }: Props) => {
   const { updateNode } = useNodeStore();
 
   const setFrequency = (e: any) => {
-    console.log("set freq", e);
     updateNode(id, { frequency: +e.value });
   };
   const setType = (e: any) => {
