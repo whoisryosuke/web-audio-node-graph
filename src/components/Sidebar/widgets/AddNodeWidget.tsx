@@ -5,7 +5,7 @@ import ALL_NODE_TYPES, {
 } from "../../../nodes";
 import { useNodeStore } from "../../../store/nodes";
 import { Button, Heading, Stack } from "@chakra-ui/react";
-import Select from "../../ui/select";
+import Select from "../../ui/Select";
 
 type Props = {};
 

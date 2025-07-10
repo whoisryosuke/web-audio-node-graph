@@ -6,7 +6,7 @@ const audioNodes = new Map<string, AudioNode>();
 const createOscillatorAudioNode = (id: string) => {
   const osc = context.createOscillator();
   osc.frequency.value = 220;
-  osc.type = "square";
+  osc.type = "sine";
   osc.start();
 
   audioNodes.set(id, osc);

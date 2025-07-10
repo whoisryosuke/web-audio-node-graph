@@ -4,7 +4,7 @@ import NodeHeading from "../components/nodes/NodeHeading";
 import NodeContent from "../components/nodes/NodeContent";
 import NodeHandle from "../components/nodes/NodeHandle";
 import Waveform from "../components/audio/Waveform";
-import Select from "../components/ui/select";
+import Select from "../components/ui/Select";
 import { useState } from "react";
 import FrequencyBars from "../components/audio/FrequencyBars";
 

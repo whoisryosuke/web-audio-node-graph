@@ -7,7 +7,7 @@ import NodeContent from "../components/nodes/NodeContent";
 import { Field, Input } from "@chakra-ui/react";
 import Slider from "../components/ui/Slider";
 import NodeInputField from "../components/nodes/NodeInputField";
-import Select from "../components/ui/select";
+import Select from "../components/ui/Select";
 import NodeHandle from "../components/nodes/NodeHandle";
 
 type Props = {
@@ -50,7 +50,6 @@ const Oscillator = ({ id, data }: Props) => {
           <Select
             className="nodrag"
             value={data.type}
-            defaultValue={data.type}
             options={options}
             onValueChange={setType}
             placeholder="Select a waveform type..."
