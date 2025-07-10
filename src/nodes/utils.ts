@@ -16,27 +16,34 @@ function createAnalyserNode() {
   return { label: "Analyser", gain: 0.42 };
 }
 
-export function createNode(type: CustomNodeTypesNames) {
+export function createNode(
+  type: CustomNodeTypesNames,
+  position = { x: 0, y: 0 },
+  data: Record<string, unknown> = {}
+) {
   const id = nanoid();
   const newNode = {
     id,
     type,
-    ...DEFAULT_NODE_PROPERTIES,
+    position,
   } as Partial<Node>;
 
-  let data;
+  let baseData;
   switch (type) {
     case "osc":
-      data = createOscillatorNode();
+      baseData = createOscillatorNode();
       break;
     case "gain":
-      data = createGainNode();
+      baseData = createGainNode();
       break;
     case "analyser":
-      data = createAnalyserNode();
+      baseData = createAnalyserNode();
       break;
   }
-  newNode.data = data;
+  newNode.data = {
+    ...baseData,
+    ...data,
+  };
 
   return newNode;
 }

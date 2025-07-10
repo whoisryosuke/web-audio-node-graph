@@ -10,10 +10,10 @@ import { useAppStore } from "../../store/app";
 type Props = {};
 
 const NodeList = (props: Props) => {
-  const { setNodePopup } = useAppStore();
+  const { mousePosition, setNodePopup } = useAppStore();
   const { addNode } = useNodeStore();
   const handleAddNode = (type: CustomNodeTypesNames) => {
-    addNode(type, {});
+    addNode(type, mousePosition, {});
 
     // Close popup
     setNodePopup(false);

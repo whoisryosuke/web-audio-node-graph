@@ -1,10 +1,6 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-
-type Vector2D = {
-  x: number;
-  y: number;
-};
+import type { Vector2D } from "../utils/types";
 
 export interface AppStoreState {
   showNodePopup: boolean;

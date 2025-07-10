@@ -17,12 +17,17 @@ import {
   removeAudioNode,
   updateAudioNode,
 } from "../services/audio/audio-graph";
+import type { Vector2D } from "../utils/types";
 
 export interface NodeStoreState {
   nodes: Node[];
   edges: Edge[];
 
-  addNode: (type: CustomNodeTypesNames, node: Partial<Node>) => void;
+  addNode: (
+    type: CustomNodeTypesNames,
+    position?: Vector2D,
+    data?: Partial<Node>
+  ) => void;
   onNodesDelete: (deleted: Node[]) => void;
   onNodesChange: (changes: NodeChange<Node>[]) => void;
   onEdgesChange: (changes: EdgeChange<Edge>[]) => void;
@@ -54,8 +59,12 @@ export const useNodeStore = create<NodeStoreState>()(
     ],
     edges: [],
 
-    addNode: (type: CustomNodeTypesNames, node: Partial<Node>) => {
-      const newNode = createNode(type) as Node;
+    addNode: (
+      type: CustomNodeTypesNames,
+      position?: Vector2D,
+      data?: Partial<Node>
+    ) => {
+      const newNode = createNode(type, position, data) as Node;
 
       // Create the audio node
       createAudioNode(type, newNode.id);
