@@ -5,6 +5,8 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import Hotkeys from "./components/Hotkeys";
 import TrackMouse from "./components/TrackMouse";
 import NodePopup from "./components/NodePopup/NodePopup";
+import { useCallback } from "react";
+import { useAppStore } from "./store/app";
 
 // const selector = (store: NodeStoreState) => ({
 //   nodes: store.nodes,
@@ -15,8 +17,16 @@ import NodePopup from "./components/NodePopup/NodePopup";
 // });
 
 function App() {
+  const { setNodePopup } = useAppStore();
   const { nodes, edges, onNodesChange, onEdgesChange, addEdge } =
     useNodeStore();
+
+  const onConnectEnd = useCallback((event, connectionState) => {
+    // when a connection is dropped on the pane it's not valid
+    if (!connectionState.isValid) {
+      setNodePopup(true);
+    }
+  }, []);
 
   return (
     <>
@@ -26,10 +36,10 @@ function App() {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={addEdge}
+        onConnectEnd={onConnectEnd}
         nodeTypes={ALL_NODE_TYPES}
       >
         <Background color="#555" />
-        {/* <Controls /> */}
       </ReactFlow>
       {/* <Sidebar /> */}
       <Hotkeys />
