@@ -5,6 +5,7 @@ import NodeContent from "../components/nodes/NodeContent";
 import NodeHandle from "../components/nodes/NodeHandle";
 import { useNodeStore } from "../store/nodes";
 import { useEffect } from "react";
+import SampleDropzone from "../components/SampleDropzone/SampleDropzone";
 
 type Props = {
   id: string;
@@ -32,15 +33,22 @@ const Sample = ({ id, data }: Props) => {
     updateNode(id, { buffer: newAudioBuffer });
   };
 
-  useEffect(() => {
-    console.log("loading sample...");
-    loadSample("/music/ff8-magic.mp3");
-  }, []);
+  const setBuffer = (newAudioBuffer: AudioBuffer) => {
+    updateNode(id, { buffer: newAudioBuffer });
+  };
+
+  // Load a debug sample locally
+  // useEffect(() => {
+  //   console.log("loading sample...");
+  //   loadSample("/music/ff8-magic.mp3");
+  // }, []);
 
   return (
     <NodeContainer>
       <NodeHeading>Sample Node</NodeHeading>
-      <NodeContent>Drag and drop sample here</NodeContent>
+      <NodeContent>
+        <SampleDropzone buffer={data.buffer} setBuffer={setBuffer} />
+      </NodeContent>
 
       <NodeHandle type="source" position={Position.Right} />
     </NodeContainer>

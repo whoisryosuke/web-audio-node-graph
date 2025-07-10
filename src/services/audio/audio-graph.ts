@@ -122,6 +122,12 @@ export function updateAudioNode(id: string, data: any) {
   const audioNode = audioNodes.get(id);
   if (!audioNode) return;
 
+  // Check if we're doing a sample and handle this edge case
+  // You can't update the audio buffer, you have to create a new node
+  if (audioNode instanceof AudioBufferSourceNode && "buffer" in data) {
+    return recreateSampleNode(id, data);
+  }
+
   // Loop through all the node properties we want to sync
   for (const param in data) {
     // Check if the audio node contains the property
@@ -153,6 +159,14 @@ export function disconnectNodes(
   const targetRef = getAudioParamsFromHandles(targetNode, targetHandle);
 
   sourceNode.disconnect(targetRef);
+}
+
+function recreateSampleNode(id: string, data: any) {
+  const newNode = context.createBufferSource();
+  newNode.buffer = data.buffer;
+  // @TODO: Copy over any existing properties (like playback time)
+
+  audioNodes.set(id, newNode);
 }
 
 export function playAudio() {
