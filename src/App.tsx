@@ -1,4 +1,4 @@
-import { Background, Controls, ReactFlow } from "@xyflow/react";
+import { Background, Controls, ReactFlow, type Edge } from "@xyflow/react";
 import { useNodeStore, type NodeStoreState } from "./store/nodes";
 import ALL_NODE_TYPES from "./nodes";
 import Sidebar from "./components/Sidebar/Sidebar";
@@ -18,8 +18,14 @@ import { useAppStore } from "./store/app";
 
 function App() {
   const { setNodePopup } = useAppStore();
-  const { nodes, edges, onNodesChange, onEdgesChange, addEdge } =
-    useNodeStore();
+  const {
+    nodes,
+    edges,
+    onNodesChange,
+    onEdgesChange,
+    addEdge,
+    setSelectedEdge,
+  } = useNodeStore();
 
   const onConnectEnd = useCallback((event, connectionState) => {
     // when a connection is dropped on the pane it's not valid
@@ -27,6 +33,14 @@ function App() {
       setNodePopup(true);
     }
   }, []);
+
+  const onEdgesClick = (event: React.MouseEvent, edge: Edge) => {
+    setSelectedEdge(edge);
+  };
+
+  const onEdgesDelete = (edges: Edge[]) => {
+    console.log("edges deleted", edges);
+  };
 
   return (
     <>
@@ -38,6 +52,8 @@ function App() {
         onConnect={addEdge}
         onConnectEnd={onConnectEnd}
         nodeTypes={ALL_NODE_TYPES}
+        onEdgeClick={onEdgesClick}
+        onEdgesDelete={onEdgesDelete}
       >
         <Background color="#555" />
       </ReactFlow>

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAppStore } from "../store/app";
+import { useNodeStore } from "../store/nodes";
+import { disconnectNodes } from "../services/audio/audio-graph";
 
 const KEY_MAP: Record<KeyboardEvent["key"], string> = {
   a: "C3",
@@ -19,11 +21,26 @@ const Hotkeys = (props: Props) => {
 
   // If pressed key is our target key then set to true
   function downHandler({ key }: KeyboardEvent): void {
+    // Node popup
     if (key == "Escape") {
       setNodePopup(false);
     }
     if (key == "Tab") {
       toggleNodePopup();
+    }
+
+    // Edge hotkeys
+    if (key == "Delete" || key == "Backspace") {
+      const { selectedEdge, deleteEdge } = useNodeStore.getState();
+      console.log("deleting selected edge", selectedEdge);
+      deleteEdge(selectedEdge.id);
+
+      // Disconnect any audio nodes/sources
+      disconnectNodes(
+        selectedEdge.source,
+        selectedEdge.target,
+        selectedEdge.targetHandle
+      );
     }
   }
   // If released key is our target key then set to false

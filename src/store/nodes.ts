@@ -31,8 +31,12 @@ export interface NodeStoreState {
   onNodesDelete: (deleted: Node[]) => void;
   onNodesChange: (changes: NodeChange<Node>[]) => void;
   onEdgesChange: (changes: EdgeChange<Edge>[]) => void;
+  deleteEdge: (edgeId: Edge["id"]) => void;
   addEdge: (data: Partial<Edge>) => void;
   updateNode: (id: string, data: Partial<Node>) => void;
+
+  selectedEdge: Edge;
+  setSelectedEdge: (edge: Edge) => void;
 }
 
 export const useNodeStore = create<NodeStoreState>()(
@@ -74,6 +78,7 @@ export const useNodeStore = create<NodeStoreState>()(
       }));
     },
 
+    // @TODO: Remove from store - move to audio graph
     onNodesDelete: (deleted: Node[]) => {
       for (const { id } of deleted) {
         removeAudioNode(id);
@@ -88,6 +93,12 @@ export const useNodeStore = create<NodeStoreState>()(
     onEdgesChange: (changes) => {
       set((state) => ({
         edges: applyEdgeChanges(changes, state.edges),
+      }));
+    },
+
+    deleteEdge: (edgeId: Edge["id"]) => {
+      set((state) => ({
+        edges: state.edges.filter((stateEdge) => stateEdge.id != edgeId),
       }));
     },
 
@@ -120,6 +131,13 @@ export const useNodeStore = create<NodeStoreState>()(
           node.id === id ? { ...node, data: { ...node.data, ...data } } : node
         ),
       }));
+    },
+
+    selectedEdge: null,
+    setSelectedEdge: (edge: Edge) => {
+      set({
+        selectedEdge: edge,
+      });
     },
   }))
 );

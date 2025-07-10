@@ -1,3 +1,4 @@
+import type { Edge } from "@xyflow/react";
 import type { CustomNodeTypesNames } from "../../nodes";
 
 const context = new AudioContext();
@@ -57,6 +58,27 @@ export function removeAudioNode(id: string) {
   audioNodes.delete(id);
 }
 
+function getAudioParamsFromHandles(
+  targetNode: AudioNode | undefined,
+  targetHandle?: string | null
+) {
+  let targetRef: AudioNode | AudioParam = targetNode;
+  if (targetHandle && targetNode) {
+    if (targetHandle in targetNode) {
+      const audioParam = targetHandle as keyof AudioNode;
+      console.log(
+        "target handle found",
+        targetNode,
+        targetHandle,
+        targetNode[audioParam]
+      );
+      targetRef = targetNode[audioParam];
+    }
+  }
+
+  return targetRef;
+}
+
 export function connectAudioNodes(
   source: string,
   target: string,
@@ -72,26 +94,7 @@ export function connectAudioNodes(
   if (!sourceNode) return;
 
   // Handle connections to node parameters vs nodes (aka "handles")
-  let sourceRef: AudioNode | AudioParam = sourceNode;
-  if (sourceHandle) {
-    if (sourceHandle in sourceNode) {
-      console.log("source handle found", sourceNode, sourceHandle);
-      sourceRef = sourceNode[sourceHandle];
-    }
-  }
-  let targetRef: AudioNode | AudioParam = targetNode;
-  if (targetHandle && targetNode) {
-    if (targetHandle in targetNode) {
-      const audioParam = targetHandle as keyof AudioNode;
-      console.log(
-        "target handle found",
-        targetNode,
-        targetHandle,
-        targetNode[audioParam]
-      );
-      targetRef = targetNode[audioParam];
-    }
-  }
+  const targetRef = getAudioParamsFromHandles(targetNode, targetHandle);
 
   // If we connect to an output node, connect to the audio context output
   if (target == "output") {
@@ -102,7 +105,7 @@ export function connectAudioNodes(
   // Check if we have a target node
   if (!targetNode) return;
   // Connect to target node
-  sourceRef.connect(targetRef);
+  sourceNode.connect(targetRef);
 }
 
 export function updateAudioNode(id: string, data: any) {
@@ -124,6 +127,22 @@ export function updateAudioNode(id: string, data: any) {
       }
     }
   }
+}
+
+export function disconnectNodes(
+  source: string,
+  target: string,
+  targetHandle?: string | null
+) {
+  const sourceNode = audioNodes.get(source);
+  const targetNode = audioNodes.get(target);
+
+  if (!sourceNode) return;
+
+  // Handle connections to node parameters vs nodes (aka "handles")
+  const targetRef = getAudioParamsFromHandles(targetNode, targetHandle);
+
+  sourceNode.disconnect(targetRef);
 }
 
 export function playAudio() {
