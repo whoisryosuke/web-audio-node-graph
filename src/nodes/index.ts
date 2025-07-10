@@ -16,6 +16,16 @@ const { output: _, ...safeNodeTypes } = {
 };
 export const ALL_SAFE_NODE_TYPES = safeNodeTypes;
 
-export type CustomNodeTypesNames = keyof typeof ALL_NODE_TYPES;
+export const ALL_SAFE_NODE_NAMES: Record<
+  keyof typeof ALL_SAFE_NODE_TYPES,
+  string
+> = {
+  osc: "Oscillator Node",
+  gain: "Gain Node",
+  analyser: "Analyser Node",
+  delay: "Delay Node",
+};
+
+export type CustomNodeTypesNames = keyof typeof ALL_SAFE_NODE_TYPES;
 
 export default ALL_NODE_TYPES;

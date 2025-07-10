@@ -24,12 +24,14 @@ const NodePopup = (props: Props) => {
         left={popupPosition.x}
         width="400px"
         bg={bg}
-        p={4}
+        p={2}
         borderRadius="md"
         opacity={showNodePopup ? 1 : 0}
         display={showNodePopup ? "block" : "none"}
       >
-        <Heading size="sm">Add a node</Heading>
+        <Heading size="sm" mb={2} py={2} px={3}>
+          Add a node
+        </Heading>
         <NodeList />
         <NodePopupClose />
       </Stack>
