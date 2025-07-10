@@ -19,6 +19,15 @@ const createGainAudioNode = (id: string) => {
   audioNodes.set(id, gain);
 };
 
+const createAnalyserNode = (id: string) => {
+  const analyser = context.createAnalyser();
+
+  // Configure analyser
+  analyser.fftSize = 1024;
+
+  audioNodes.set(id, analyser);
+};
+
 export function createAudioNode(type: CustomNodeTypesNames, id: string) {
   switch (type) {
     case "osc":
@@ -26,6 +35,9 @@ export function createAudioNode(type: CustomNodeTypesNames, id: string) {
       break;
     case "gain":
       createGainAudioNode(id);
+      break;
+    case "analyser":
+      createAnalyserNode(id);
       break;
     case "output":
       break;
@@ -75,4 +87,8 @@ export function updateAudioNode(id: string, data: any) {
 
 export function playAudio() {
   context.resume();
+}
+
+export function getAudioNode(id: string) {
+  return audioNodes.get(id);
 }

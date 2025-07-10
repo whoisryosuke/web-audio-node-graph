@@ -33,7 +33,6 @@ const Oscillator = ({ id, data }: Props) => {
     })
   );
 
-  console.log("node data", data);
   return (
     <NodeContainer>
       <NodeHeading>Oscillator Node</NodeHeading>

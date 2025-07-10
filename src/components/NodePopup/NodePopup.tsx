@@ -17,7 +17,7 @@ const NodePopup = (props: Props) => {
   }, [showNodePopup]);
 
   return (
-    <Portal>
+    <Portal disabled={!showNodePopup}>
       <Stack
         position="absolute"
         top={popupPosition.y}
@@ -27,6 +27,7 @@ const NodePopup = (props: Props) => {
         p={4}
         borderRadius="md"
         opacity={showNodePopup ? 1 : 0}
+        display={showNodePopup ? "block" : "none"}
       >
         <Heading size="sm">Add a node</Heading>
         <NodeList />
