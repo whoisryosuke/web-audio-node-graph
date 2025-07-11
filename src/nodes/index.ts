@@ -5,6 +5,7 @@ import Analyser from "./Analyser";
 import Delay from "./Delay";
 import Sample from "./Sample";
 import ConstantSource from "./ConstantSource";
+import WaveShaper from "./WaveShaper";
 
 const ALL_NODE_TYPES = {
   osc: Oscillator,
@@ -14,6 +15,7 @@ const ALL_NODE_TYPES = {
   sample: Sample,
   output: Output,
   "constant-source": ConstantSource,
+  "wave-shaper": WaveShaper,
 };
 const { output: _, ...safeNodeTypes } = {
   ...ALL_NODE_TYPES,
@@ -30,6 +32,7 @@ export const ALL_SAFE_NODE_NAMES: Record<
   delay: "Delay Node",
   sample: "Sample Node",
   "constant-source": "Constant Source",
+  "wave-shaper": "Wave Shaper",
 };
 
 export type CustomNodeTypesNames = keyof typeof ALL_SAFE_NODE_TYPES;

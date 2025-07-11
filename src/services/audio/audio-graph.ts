@@ -1,6 +1,7 @@
 import type { Edge } from "@xyflow/react";
 import type { CustomNodeTypesNames } from "../../nodes";
 import { useNodeStore } from "../../store/nodes";
+import { generateWaveShaperCurve } from "../../utils/audio/wave-shaper";
 
 const context = new AudioContext();
 const audioNodes = new Map<string, AudioNode>();
@@ -49,6 +50,14 @@ const createConstantSourceNode = (id: string) => {
   audioNodes.set(id, node);
 };
 
+const createWaveShaperNode = (id: string) => {
+  const node = context.createWaveShaper();
+  node.curve = generateWaveShaperCurve("sigmoid", 400);
+  node.oversample = "4x";
+
+  audioNodes.set(id, node);
+};
+
 export function createAudioNode(type: CustomNodeTypesNames, id: string) {
   switch (type) {
     case "osc":
@@ -68,6 +77,9 @@ export function createAudioNode(type: CustomNodeTypesNames, id: string) {
       break;
     case "constant-source":
       createConstantSourceNode(id);
+      break;
+    case "wave-shaper":
+      createWaveShaperNode(id);
       break;
     default:
       break;

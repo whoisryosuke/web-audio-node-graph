@@ -1,6 +1,7 @@
 import { nanoid } from "nanoid";
 import type { CustomNodeTypesNames } from ".";
 import { type Node } from "@xyflow/react";
+import { generateWaveShaperCurve } from "../utils/audio/wave-shaper";
 
 const DEFAULT_NODE_PROPERTIES = {
   position: { x: 0, y: 0 },
@@ -17,6 +18,13 @@ function createAnalyserNode() {
 }
 function createConstantSourceNode() {
   return { label: "Constant Source", offset: 42.0 };
+}
+function createWaveShaperNode() {
+  return {
+    label: "Wave Shaper",
+    curve: generateWaveShaperCurve("sigmoid", 400),
+    oversample: "4x",
+  };
 }
 
 export function createNode(
@@ -44,6 +52,9 @@ export function createNode(
       break;
     case "constant-source":
       baseData = createConstantSourceNode();
+      break;
+    case "wave-shaper":
+      baseData = createWaveShaperNode();
       break;
   }
   newNode.data = {
