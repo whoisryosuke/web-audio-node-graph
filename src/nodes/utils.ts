@@ -13,7 +13,10 @@ function createGainNode() {
   return { label: "Gain", gain: 0.42 };
 }
 function createAnalyserNode() {
-  return { label: "Analyser", gain: 0.42 };
+  return { label: "Analyser" };
+}
+function createConstantSourceNode() {
+  return { label: "Constant Source", offset: 42.0 };
 }
 
 export function createNode(
@@ -38,6 +41,9 @@ export function createNode(
       break;
     case "analyser":
       baseData = createAnalyserNode();
+      break;
+    case "constant-source":
+      baseData = createConstantSourceNode();
       break;
   }
   newNode.data = {

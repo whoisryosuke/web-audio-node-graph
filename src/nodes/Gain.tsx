@@ -11,15 +11,20 @@ import { Box, Text } from "@chakra-ui/react";
 import NodeInput from "../components/nodes/NodeInput";
 import NodeOutput from "../components/nodes/NodeOutput";
 
+export type GainData = {
+  gain: number;
+};
+
 type Props = {
   id: string;
-  data: Partial<Node>;
+  data: GainData;
 };
 
 const Gain = ({ id, data }: Props) => {
   const { updateNode } = useNodeStore();
 
-  const setGain = (e: any) => updateNode(id, { gain: +e.value });
+  const setGain = (e: { value: number[] }) =>
+    updateNode<GainData>(id, { gain: +e.value });
 
   return (
     <NodeContainer>
@@ -27,11 +32,7 @@ const Gain = ({ id, data }: Props) => {
       <NodeInput />
       <NodeOutput />
       <NodeContent>
-        <NodeInputField
-          label="Gain"
-          helper={`${data.gain}`}
-          position="relative"
-        >
+        <NodeInputField label="Gain" helper={`${data.gain}`}>
           <Slider
             className="nodrag"
             min={0}

@@ -33,7 +33,7 @@ export interface NodeStoreState {
   onEdgesChange: (changes: EdgeChange<Edge>[]) => void;
   deleteEdge: (edgeId: Edge["id"]) => void;
   addEdge: (data: Partial<Edge>) => void;
-  updateNode: (id: string, data: Partial<Node>) => void;
+  updateNode: <T>(id: string, data: T) => void;
 
   selectedEdge: Edge;
   setSelectedEdge: (edge: Edge) => void;
@@ -124,7 +124,7 @@ export const useNodeStore = create<NodeStoreState>()(
       set((state) => ({ edges: [edge, ...state.edges] }));
     },
 
-    updateNode: (id: string, data: Partial<Node>) => {
+    updateNode: <T>(id: string, data: T) => {
       updateAudioNode(id, data);
       set((state) => ({
         nodes: state.nodes.map((node) =>

@@ -42,6 +42,13 @@ const createSampleNode = (id: string) => {
   audioNodes.set(id, node);
 };
 
+const createConstantSourceNode = (id: string) => {
+  const node = context.createConstantSource();
+  node.start();
+
+  audioNodes.set(id, node);
+};
+
 export function createAudioNode(type: CustomNodeTypesNames, id: string) {
   switch (type) {
     case "osc":
@@ -58,6 +65,9 @@ export function createAudioNode(type: CustomNodeTypesNames, id: string) {
       break;
     case "sample":
       createSampleNode(id);
+      break;
+    case "constant-source":
+      createConstantSourceNode(id);
       break;
     default:
       break;

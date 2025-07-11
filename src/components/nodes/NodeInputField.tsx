@@ -22,6 +22,7 @@ const NodeInputField = ({
       borderStyle="solid"
       borderRadius="md"
       p={4}
+      className="nodrag"
     >
       <Field.Label>{label}</Field.Label>
       {children}

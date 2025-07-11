@@ -10,7 +10,7 @@ const Slider = (props: Props) => {
         <ChakraSlider.Track>
           <ChakraSlider.Range />
         </ChakraSlider.Track>
-        <ChakraSlider.Thumbs />
+        <ChakraSlider.Thumbs className="nodrag" />
       </ChakraSlider.Control>
     </ChakraSlider.Root>
   );
