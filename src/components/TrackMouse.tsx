@@ -23,7 +23,7 @@ const TrackMouse = (props: Props) => {
     };
   }, [syncMouse]);
 
-  return <div>TrackMouse</div>;
+  return <></>;
 };
 
 export default TrackMouse;
