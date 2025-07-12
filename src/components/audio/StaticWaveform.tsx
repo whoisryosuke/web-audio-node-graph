@@ -6,7 +6,6 @@ type Props = {
 };
 
 const StaticWaveform = ({ buffer, ...props }: Props) => {
-  console.log("static waveform", buffer);
   // Get the waveform data
   const waveformData = buffer ? buffer.getChannelData(0) : [];
 
