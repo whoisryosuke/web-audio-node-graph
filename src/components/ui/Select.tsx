@@ -4,10 +4,11 @@ import {
   type ListCollection,
   createListCollection,
   type SliderRootProps,
+  type SelectRootProps,
 } from "@chakra-ui/react";
 import { useMemo } from "react";
 
-type Props = SliderRootProps & {
+type Props = SelectRootProps & {
   options: {
     value: string;
     label: string;
