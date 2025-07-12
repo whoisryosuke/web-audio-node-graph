@@ -22,7 +22,7 @@ const Oscillator = ({ id, data }: Props) => {
     updateNode(id, { frequency: +e.value });
   };
   const setType = (e: any) => {
-    updateNode(id, { type: e.value });
+    updateNode(id, { type: e.value[0] });
   };
 
   const options = ["sine", "triangle", "sawtooth", "square"].map(
@@ -49,7 +49,7 @@ const Oscillator = ({ id, data }: Props) => {
         <NodeInputField label="Waveform">
           <Select
             className="nodrag"
-            value={data.type}
+            value={[data.type ?? ""]}
             options={options}
             onValueChange={setType}
             placeholder="Select a waveform type..."
