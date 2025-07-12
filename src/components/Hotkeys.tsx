@@ -20,11 +20,21 @@ const Hotkeys = (props: Props) => {
   const keys = Object.keys(KEY_MAP);
 
   // If pressed key is our target key then set to true
-  function downHandler({ key }: KeyboardEvent): void {
-    // Node popup
+  function downHandler({ key, target }: KeyboardEvent): void {
+    // Always close node popup
     if (key == "Escape") {
       setNodePopup(false);
     }
+
+    // Check if the event target is an input field, textarea, or select element
+    // Otherwise hotkeys would fire as user types
+    const tagName = (target as HTMLElement).tagName;
+    if (tagName === "INPUT" || tagName === "TEXTAREA" || tagName === "SELECT") {
+      // If it is, do nothing (don't trigger the hotkey)
+      return;
+    }
+
+    // Node popup
     if (key == "Tab") {
       toggleNodePopup();
     }
