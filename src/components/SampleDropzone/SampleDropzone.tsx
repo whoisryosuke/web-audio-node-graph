@@ -146,7 +146,10 @@ const SampleDropzone = ({ buffer, setBuffer }: Props) => {
     <DropzoneContainer ref={dropzoneRef}>
       {buffer ? (
         <div>
-          <StaticWaveform buffer={buffer} />
+          <StaticWaveform
+            key={file ? `${file.name}-${file.size}` : buffer.duration}
+            buffer={buffer}
+          />
           {file && (
             <Stack direction="row" alignItems="center">
               <Text

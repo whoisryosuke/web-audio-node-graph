@@ -7,13 +7,19 @@ import ALL_NODE_TYPES, {
 import { Box, Button, Stack } from "@chakra-ui/react";
 import { useNodeStore } from "../../store/nodes";
 import { useAppStore } from "../../store/app";
-import { useBackgroundColor, useBorderColor } from "../../styles/colors";
+import {
+  useBackgroundColor,
+  useBorderColor,
+  useInputBg,
+} from "../../styles/colors";
+import { ALL_SAFE_NODE_ICONS } from "../../nodes/icons";
 
 type Props = {};
 
 const NodeList = (props: Props) => {
   const { mousePosition, setNodePopup } = useAppStore();
   const { addNode } = useNodeStore();
+  const iconColor = useInputBg();
 
   const handleAddNode = (type: CustomNodeTypesNames) => {
     addNode(type, mousePosition, {});
@@ -23,16 +29,19 @@ const NodeList = (props: Props) => {
   };
 
   const keys = Object.keys(ALL_SAFE_NODE_TYPES) as CustomNodeTypesNames[];
-  const buttons = keys.map((nodeType) => (
-    <Button
-      key={nodeType}
-      variant="subtle"
-      justifyContent="flex-start"
-      onClick={() => handleAddNode(nodeType)}
-    >
-      {ALL_SAFE_NODE_NAMES[nodeType]}
-    </Button>
-  ));
+  const buttons = keys.map((nodeType) => {
+    const Icon = ALL_SAFE_NODE_ICONS[nodeType];
+    return (
+      <Button
+        key={nodeType}
+        variant="subtle"
+        justifyContent="flex-start"
+        onClick={() => handleAddNode(nodeType)}
+      >
+        <Icon color={iconColor} /> {ALL_SAFE_NODE_NAMES[nodeType]}
+      </Button>
+    );
+  });
   return (
     <Stack maxHeight="300px" overflowY="scroll">
       {buttons}
