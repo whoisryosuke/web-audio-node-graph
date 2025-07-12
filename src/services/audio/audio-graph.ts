@@ -206,7 +206,7 @@ export function disconnectNodes(
   sourceNode.disconnect(targetRef);
 }
 
-function recreateSampleNode(id: string, data: any) {
+export function recreateSampleNode(id: string, data?: any) {
   const oldNode = audioNodes.get(id)?.node as AudioBufferSourceNode | undefined;
   const newNode = context.createBufferSource();
   newNode.buffer = data.buffer;
@@ -218,6 +218,22 @@ function recreateSampleNode(id: string, data: any) {
   }
 
   audioNodes.set(id, { node: newNode });
+}
+
+export function reconnectNode(audioNodeKey: string) {
+  // Reconnect node
+  // Find all edges and reconnect this node to any targets
+  const { edges } = useNodeStore.getState();
+  const foundEdges = edges.filter((edge) => edge.source == audioNodeKey);
+  foundEdges.forEach((foundEdge) => {
+    // Connect new node to target from existing edge
+    connectAudioNodes(
+      audioNodeKey,
+      foundEdge.target,
+      null,
+      foundEdge.targetHandle
+    );
+  });
 }
 
 export function playAudio() {
@@ -240,19 +256,7 @@ export function playAudio() {
       // Update the cache with new audio node
       audioNodes.set(audioNodeKey, { node: newNode });
 
-      // Reconnect node
-      // Find all edges and reconnect this node to any targets
-      const { edges } = useNodeStore.getState();
-      const foundEdges = edges.filter((edge) => edge.source == audioNodeKey);
-      foundEdges.forEach((foundEdge) => {
-        // Connect new node to target from existing edge
-        connectAudioNodes(
-          audioNodeKey,
-          foundEdge.target,
-          null,
-          foundEdge.targetHandle
-        );
-      });
+      reconnectNode(audioNodeKey);
     }
   });
 }

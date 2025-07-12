@@ -6,6 +6,13 @@ import NodeHandle from "../components/nodes/NodeHandle";
 import { useNodeStore } from "../store/nodes";
 import { useEffect } from "react";
 import SampleDropzone from "../components/SampleDropzone/SampleDropzone";
+import SamplePiano from "../components/SamplePiano/SamplePiano";
+import {
+  getAudioNode,
+  reconnectNode,
+  recreateSampleNode,
+} from "../services/audio/audio-graph";
+import { calculateDetune } from "../components/SamplePiano/utils";
 
 type Props = {
   id: string;
@@ -37,6 +44,17 @@ const Sample = ({ id, data }: Props) => {
     updateNode(id, { buffer: newAudioBuffer });
   };
 
+  const playSample = (note: string) => {
+    const node = getAudioNode(id) as AudioBufferSourceNode;
+    if (!node) return;
+
+    node.detune.value = calculateDetune(note);
+    console.log("starting buffer node", node);
+    node.start();
+    recreateSampleNode(id, data);
+    reconnectNode(id);
+  };
+
   // Load a debug sample locally
   // useEffect(() => {
   //   console.log("loading sample...");
@@ -48,6 +66,7 @@ const Sample = ({ id, data }: Props) => {
       <NodeHeading>Sample Node</NodeHeading>
       <NodeContent>
         <SampleDropzone buffer={data.buffer} setBuffer={setBuffer} />
+        {data.buffer && <SamplePiano id={id} playSample={playSample} />}
       </NodeContent>
 
       <NodeHandle type="source" position={Position.Right} />
