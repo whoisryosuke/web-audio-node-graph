@@ -28,7 +28,7 @@ const Bitcrusher = ({ id, data }: Props) => {
 
   return (
     <NodeContainer>
-      <NodeHeading>Bitcrusher Node</NodeHeading>
+      <NodeHeading color="purple">Bitcrusher Node</NodeHeading>
       <NodeInput />
       <NodeOutput />
       <NodeContent>
