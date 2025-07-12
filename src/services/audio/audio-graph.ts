@@ -2,10 +2,17 @@ import type { Edge } from "@xyflow/react";
 import type { CustomNodeTypesNames } from "../../nodes";
 import { useNodeStore } from "../../store/nodes";
 import { generateWaveShaperCurve } from "../../utils/audio/wave-shaper";
-import { createBitcrusherNode } from "clawdio";
+import { createBitcrusherNode, type BitcrusherNode } from "clawdio";
+
+type CustomNodes = BitcrusherNode;
+
+type AudioSetup<T> = {
+  node: AudioNode;
+  instance?: T;
+};
 
 const context = new AudioContext();
-const audioNodes = new Map<string, AudioNode>();
+const audioNodes = new Map<string, AudioSetup<CustomNodes>>();
 
 const createOscillatorAudioNode = (id: string) => {
   const osc = context.createOscillator();
@@ -13,14 +20,14 @@ const createOscillatorAudioNode = (id: string) => {
   osc.type = "sine";
   osc.start();
 
-  audioNodes.set(id, osc);
+  audioNodes.set(id, { node: osc });
 };
 
 const createGainAudioNode = (id: string) => {
   const gain = context.createGain();
   gain.gain.value = 0.25;
 
-  audioNodes.set(id, gain);
+  audioNodes.set(id, { node: gain });
 };
 
 const createAnalyserNode = (id: string) => {
@@ -29,26 +36,26 @@ const createAnalyserNode = (id: string) => {
   // Configure analyser
   analyser.fftSize = 1024;
 
-  audioNodes.set(id, analyser);
+  audioNodes.set(id, { node: analyser });
 };
 
 const createDelayNode = (id: string) => {
   const node = context.createDelay();
 
-  audioNodes.set(id, node);
+  audioNodes.set(id, { node });
 };
 
 const createSampleNode = (id: string) => {
   const node = context.createBufferSource();
 
-  audioNodes.set(id, node);
+  audioNodes.set(id, { node });
 };
 
 const createConstantSourceNode = (id: string) => {
   const node = context.createConstantSource();
   node.start();
 
-  audioNodes.set(id, node);
+  audioNodes.set(id, { node });
 };
 
 const createWaveShaperNode = (id: string) => {
@@ -56,15 +63,13 @@ const createWaveShaperNode = (id: string) => {
   node.curve = generateWaveShaperCurve("sigmoid", 400);
   node.oversample = "4x";
 
-  audioNodes.set(id, node);
+  audioNodes.set(id, { node });
 };
 
 const createBitcrusherWorklet = async (id: string) => {
-  const node = await createBitcrusherNode(context, 4, 0.1);
+  const bitcrusher = await createBitcrusherNode(context, 4, 0.1);
 
-  // @TODO: Figure out how to keep around instance - we need it to update props...
-
-  audioNodes.set(id, node.node);
+  audioNodes.set(id, { node: bitcrusher.node, instance: bitcrusher });
 };
 
 export function createAudioNode(type: CustomNodeTypesNames, id: string) {
@@ -103,7 +108,7 @@ export function removeAudioNode(id: string) {
 }
 
 function getAudioParamsFromHandles(
-  targetNode: AudioNode | undefined,
+  targetNode: AudioNode,
   targetHandle?: string | null
 ) {
   let targetRef: AudioNode | AudioParam = targetNode;
@@ -116,7 +121,7 @@ function getAudioParamsFromHandles(
         targetHandle,
         targetNode[audioParam]
       );
-      targetRef = targetNode[audioParam];
+      targetRef = targetNode[audioParam] as unknown as AudioParam;
     }
   }
 
@@ -129,16 +134,13 @@ export function connectAudioNodes(
   sourceHandle: string | null,
   targetHandle: string | null | undefined
 ) {
-  const sourceNode = audioNodes.get(source);
-  const targetNode = audioNodes.get(target);
+  const sourceNode = audioNodes.get(source)?.node;
+  const targetNode = audioNodes.get(target)?.node;
   console.log("connecting nodes", "source:", source, "target:", target);
   console.log("connecting nodes", "source:", sourceNode, "target:", targetNode);
 
   // Check if we have a source node - kinda critical for everything
   if (!sourceNode) return;
-
-  // Handle connections to node parameters vs nodes (aka "handles")
-  const targetRef = getAudioParamsFromHandles(targetNode, targetHandle);
 
   // If we connect to an output node, connect to the audio context output
   if (target == "output") {
@@ -146,14 +148,22 @@ export function connectAudioNodes(
     return sourceNode.connect(context.destination);
   }
 
+  // Check if we have a target node - also critical for everything else past this point
+  if (!targetNode) return;
+  console.log("connecting nodes - past checkpoint!", source, target);
+
+  // Handle connections to node parameters vs nodes (aka "handles")
+  const targetRef = getAudioParamsFromHandles(targetNode, targetHandle);
+
   // Check if we have a target node
   if (!targetNode) return;
   // Connect to target node
+  // @ts-expect-error - We use generic AudioNode type, which doesn't handle connecting to AudioParams (which some nodes do)
   sourceNode.connect(targetRef);
 }
 
 export function updateAudioNode(id: string, data: any) {
-  const audioNode = audioNodes.get(id);
+  const audioNode = audioNodes.get(id)?.node;
   if (!audioNode) return;
 
   // Check if we're doing a sample and handle this edge case
@@ -184,23 +194,30 @@ export function disconnectNodes(
   target: string,
   targetHandle?: string | null
 ) {
-  const sourceNode = audioNodes.get(source);
-  const targetNode = audioNodes.get(target);
+  const sourceNode = audioNodes.get(source)?.node;
+  const targetNode = audioNodes.get(target)?.node;
 
-  if (!sourceNode) return;
+  if (!sourceNode || !targetNode) return;
 
   // Handle connections to node parameters vs nodes (aka "handles")
   const targetRef = getAudioParamsFromHandles(targetNode, targetHandle);
 
+  // @ts-expect-error - TS can't grab the right overload in this case, asks for a number in my case
   sourceNode.disconnect(targetRef);
 }
 
 function recreateSampleNode(id: string, data: any) {
+  const oldNode = audioNodes.get(id)?.node as AudioBufferSourceNode | undefined;
   const newNode = context.createBufferSource();
   newNode.buffer = data.buffer;
-  // @TODO: Copy over any existing properties (like playback time)
 
-  audioNodes.set(id, newNode);
+  // Copy over any existing properties (like playback time)
+  if (oldNode) {
+    newNode.playbackRate.value = oldNode.playbackRate.value;
+    newNode.loop = oldNode.loop;
+  }
+
+  audioNodes.set(id, { node: newNode });
 }
 
 export function playAudio() {
@@ -210,8 +227,7 @@ export function playAudio() {
   // Nodes like oscillators play by default since we start them initially
 
   // But samples need to be played individually
-  const updateNodes = [];
-  audioNodes.forEach((audioNode, audioNodeKey) => {
+  audioNodes.forEach(({ node: audioNode }, audioNodeKey) => {
     // Check if it's a sample and play it
     if (audioNode instanceof AudioBufferSourceNode) {
       audioNode.start();
@@ -222,7 +238,7 @@ export function playAudio() {
       newNode.buffer = audioNode.buffer;
 
       // Update the cache with new audio node
-      audioNodes.set(audioNodeKey, newNode);
+      audioNodes.set(audioNodeKey, { node: newNode });
 
       // Reconnect node
       // Find all edges and reconnect this node to any targets
@@ -242,5 +258,9 @@ export function playAudio() {
 }
 
 export function getAudioNode(id: string) {
+  return audioNodes.get(id)?.node;
+}
+
+export function getAudioSetup(id: string) {
   return audioNodes.get(id);
 }
