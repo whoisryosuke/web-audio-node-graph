@@ -2,6 +2,7 @@ import type { Edge } from "@xyflow/react";
 import type { CustomNodeTypesNames } from "../../nodes";
 import { useNodeStore } from "../../store/nodes";
 import { generateWaveShaperCurve } from "../../utils/audio/wave-shaper";
+import { createBitcrusherNode } from "clawdio";
 
 const context = new AudioContext();
 const audioNodes = new Map<string, AudioNode>();
@@ -58,6 +59,14 @@ const createWaveShaperNode = (id: string) => {
   audioNodes.set(id, node);
 };
 
+const createBitcrusherWorklet = async (id: string) => {
+  const node = await createBitcrusherNode(context, 4, 0.1);
+
+  // @TODO: Figure out how to keep around instance - we need it to update props...
+
+  audioNodes.set(id, node.node);
+};
+
 export function createAudioNode(type: CustomNodeTypesNames, id: string) {
   switch (type) {
     case "osc":
@@ -80,6 +89,9 @@ export function createAudioNode(type: CustomNodeTypesNames, id: string) {
       break;
     case "wave-shaper":
       createWaveShaperNode(id);
+      break;
+    case "bitcrusher":
+      createBitcrusherWorklet(id);
       break;
     default:
       break;

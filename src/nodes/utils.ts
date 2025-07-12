@@ -26,6 +26,12 @@ function createWaveShaperNode() {
     oversample: "4x",
   };
 }
+function createBitcrusherNode() {
+  return {
+    label: "Bitcrusher",
+    // bits
+  };
+}
 
 export function createNode(
   type: CustomNodeTypesNames,
@@ -55,6 +61,9 @@ export function createNode(
       break;
     case "wave-shaper":
       baseData = createWaveShaperNode();
+      break;
+    case "bitcrusher":
+      baseData = createBitcrusherNode();
       break;
   }
   newNode.data = {
