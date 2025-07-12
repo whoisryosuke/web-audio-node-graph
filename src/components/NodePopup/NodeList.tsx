@@ -14,9 +14,12 @@ import {
 } from "../../styles/colors";
 import { ALL_SAFE_NODE_ICONS } from "../../nodes/icons";
 
-type Props = {};
+type Props = {
+  search: string;
+  setSearch: (search: string) => void;
+};
 
-const NodeList = (props: Props) => {
+const NodeList = ({ search, setSearch }: Props) => {
   const { mousePosition, setNodePopup } = useAppStore();
   const { addNode } = useNodeStore();
   const iconColor = useInputBg();
@@ -26,9 +29,22 @@ const NodeList = (props: Props) => {
 
     // Close popup
     setNodePopup(false);
+
+    // Reset search
+    setSearch("");
   };
 
-  const keys = Object.keys(ALL_SAFE_NODE_TYPES) as CustomNodeTypesNames[];
+  // We check all the names and see if any match
+  // then return the keys
+  const searchResults = Object.entries(ALL_SAFE_NODE_NAMES)
+    .filter(([_, nodeName]) => nodeName.toLowerCase().includes(search))
+    .map(([key]) => key) as CustomNodeTypesNames[];
+
+  // We grab all the keys for the node types
+  let keys = Object.keys(ALL_SAFE_NODE_TYPES) as CustomNodeTypesNames[];
+  // and filter it by the search keys we found above
+  keys = keys.filter((key) => searchResults.includes(key));
+
   const buttons = keys.map((nodeType) => {
     const Icon = ALL_SAFE_NODE_ICONS[nodeType];
     return (
