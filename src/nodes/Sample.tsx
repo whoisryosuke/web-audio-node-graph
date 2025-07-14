@@ -4,7 +4,7 @@ import NodeHeading from "../components/nodes/NodeHeading";
 import NodeContent from "../components/nodes/NodeContent";
 import NodeHandle from "../components/nodes/NodeHandle";
 import { useNodeStore } from "../store/nodes";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import SampleDropzone from "../components/SampleDropzone/SampleDropzone";
 import SamplePiano from "../components/SamplePiano/SamplePiano";
 import {
@@ -13,15 +13,32 @@ import {
   recreateSampleNode,
 } from "../services/audio/audio-graph";
 import { calculateDetune } from "../components/SamplePiano/utils";
+import Select from "../components/ui/Select";
+import SampleDrumPad from "../components/SampleDrumPad/SampleDrumPad";
+import { Stack } from "@chakra-ui/react";
+
+export type SampleData = {
+  buffer: AudioBuffer;
+};
 
 type Props = {
   id: string;
-  data: Partial<Node>;
+  data: SampleData;
 };
 
+const VIZ_COMPONENTS = {
+  Piano: SamplePiano,
+  "Drum Pad": SampleDrumPad,
+};
+
+const VIZ_OPTIONS = ["Piano", "Drum Pad"] as const;
+type VizOptions = (typeof VIZ_OPTIONS)[number];
+
 const Sample = ({ id, data }: Props) => {
+  const [currentViz, setCurrentViz] = useState<VizOptions>("Piano");
   const { updateNode } = useNodeStore();
 
+  // Load a sample from disk (good for debug)
   const loadSample = async (file: string) => {
     console.log("loading sample");
     const audioCtx = new window.OfflineAudioContext(2, 44100 * 40, 44100);
@@ -50,7 +67,10 @@ const Sample = ({ id, data }: Props) => {
 
     node.detune.value = calculateDetune(note);
     console.log("starting buffer node", node);
+    // Play the sound
     node.start();
+
+    // Recreate the buffer node and reconnect it as needed
     recreateSampleNode(id, data);
     reconnectNode(id);
   };
@@ -61,12 +81,33 @@ const Sample = ({ id, data }: Props) => {
   //   loadSample("/music/ff8-magic.mp3");
   // }, []);
 
+  const handleChange = (e: { value: string[] }) => {
+    const newViz = e.value[0] as VizOptions;
+    setCurrentViz(newViz);
+  };
+  const options = VIZ_OPTIONS.map((nodeType) => ({
+    value: nodeType,
+    label: nodeType,
+  }));
+  const PianoComponent = VIZ_COMPONENTS[currentViz];
+
   return (
-    <NodeContainer>
+    <NodeContainer maxWidth="375px">
       <NodeHeading>Sample Node</NodeHeading>
       <NodeContent>
         <SampleDropzone buffer={data.buffer} setBuffer={setBuffer} />
-        {data.buffer && <SamplePiano id={id} playSample={playSample} />}
+        {data.buffer && (
+          <Stack>
+            <Select
+              name="Piano Type"
+              value={[currentViz]}
+              onValueChange={handleChange}
+              options={options}
+              placeholder="Select an piano type"
+            />
+            <PianoComponent key={currentViz} id={id} playSample={playSample} />
+          </Stack>
+        )}
       </NodeContent>
 
       <NodeHandle type="source" position={Position.Right} />

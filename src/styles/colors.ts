@@ -11,3 +11,6 @@ export const useNodeHeaderBackground = (color: string) =>
 export const useInputBg = () => useColorModeValue("gray.200", "gray.800");
 export const useInputBorder = () => useColorModeValue("gray.300", "gray.700");
 export const useInputText = () => useColorModeValue("gray.600", "gray.400");
+
+// Buttons
+export const useButtonHoverBg = () => useColorModeValue("blue.400", "blue.600");
