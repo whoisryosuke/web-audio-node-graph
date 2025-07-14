@@ -27,9 +27,9 @@ const Output = ({ id, data }: Props) => {
       <NodeInput name="" />
       <NodeContent>
         <VStack>
-          <Button colorPalette="blue" width="100%" onClick={handlePlayAudio}>
+          {/* <Button colorPalette="blue" width="100%" onClick={handlePlayAudio}>
             Play Audio
-          </Button>
+          </Button> */}
         </VStack>
       </NodeContent>
     </NodeContainer>
