@@ -7,6 +7,7 @@ import TrackMouse from "./components/TrackMouse";
 import NodePopup from "./components/NodePopup/NodePopup";
 import { useCallback } from "react";
 import { useAppStore } from "./store/app";
+import Footer from "./components/Footer/Footer";
 
 // const selector = (store: NodeStoreState) => ({
 //   nodes: store.nodes,
@@ -61,6 +62,7 @@ function App() {
       <Hotkeys />
       <TrackMouse />
       <NodePopup />
+      <Footer />
     </>
   );
 }

@@ -2,3 +2,7 @@
   background: transparent;
   padding: 0;
 }
+
+.react-flow__attribution {
+  display: none;
+}
