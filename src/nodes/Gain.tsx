@@ -10,6 +10,7 @@ import NodeHandle from "../components/nodes/NodeHandle";
 import { Box, Text } from "@chakra-ui/react";
 import NodeInput from "../components/nodes/NodeInput";
 import NodeOutput from "../components/nodes/NodeOutput";
+import { ALL_SAFE_NODE_ICONS } from "./icons";
 
 export type GainData = {
   gain: number;
@@ -28,7 +29,9 @@ const Gain = ({ id, data }: Props) => {
 
   return (
     <NodeContainer>
-      <NodeHeading color="purple">Gain Node</NodeHeading>
+      <NodeHeading color="purple" icon={ALL_SAFE_NODE_ICONS["gain"]}>
+        Gain Node
+      </NodeHeading>
       <NodeInput />
       <NodeOutput />
       <NodeContent>

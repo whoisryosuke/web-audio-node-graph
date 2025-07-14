@@ -9,10 +9,15 @@ import Slider from "../components/ui/Slider";
 import NodeHandle from "../components/nodes/NodeHandle";
 import NodeInput from "../components/nodes/NodeInput";
 import NodeOutput from "../components/nodes/NodeOutput";
+import { ALL_SAFE_NODE_ICONS } from "./icons";
+
+type DelayNodeData = {
+  delayTime: number;
+};
 
 type Props = {
   id: string;
-  data: Partial<Node>;
+  data: DelayNodeData;
 };
 
 const Delay = ({ id, data }: Props) => {
@@ -22,15 +27,13 @@ const Delay = ({ id, data }: Props) => {
 
   return (
     <NodeContainer>
-      <NodeHeading color="purple">Delay Node</NodeHeading>
+      <NodeHeading color="purple" icon={ALL_SAFE_NODE_ICONS["delay"]}>
+        Delay Node
+      </NodeHeading>
       <NodeInput />
       <NodeOutput />
       <NodeContent>
-        <NodeInputField
-          label="Delay"
-          helper={`${data.delayTime}`}
-          position="relative"
-        >
+        <NodeInputField label="Delay" helper={`${data.delayTime}`}>
           <Slider
             className="nodrag"
             min={0}

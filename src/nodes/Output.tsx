@@ -9,6 +9,7 @@ import NodeContent from "../components/nodes/NodeContent";
 import NodeHeading from "../components/nodes/NodeHeading";
 import NodeInput from "../components/nodes/NodeInput";
 import { playAudio } from "../services/audio/audio-graph";
+import { MdSpeaker } from "react-icons/md";
 
 type Props = BaseNode;
 
@@ -20,7 +21,9 @@ const Output = ({ id, data }: Props) => {
   };
   return (
     <NodeContainer>
-      <NodeHeading color="gray">Output</NodeHeading>
+      <NodeHeading color="gray" icon={MdSpeaker}>
+        Output
+      </NodeHeading>
       <NodeInput name="" />
       <NodeContent>
         <VStack>

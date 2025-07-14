@@ -8,6 +8,7 @@ import Slider from "../components/ui/Slider";
 import type { SliderRootProps } from "@chakra-ui/react";
 import NodeInputField from "../components/nodes/NodeInputField";
 import NodeHandle from "../components/nodes/NodeHandle";
+import { ALL_SAFE_NODE_ICONS } from "./icons";
 
 export type ConstantSourceData = {
   offset: number;
@@ -27,7 +28,9 @@ const ConstantSource = ({ id, data }: Props) => {
 
   return (
     <NodeContainer>
-      <NodeHeading>Constant Source Node</NodeHeading>
+      <NodeHeading icon={ALL_SAFE_NODE_ICONS["constant-source"]}>
+        Constant Source Node
+      </NodeHeading>
       <NodeContent>
         <NodeInputField label="Offset" helper={`${data.offset}`}>
           <Slider

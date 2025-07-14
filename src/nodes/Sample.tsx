@@ -16,6 +16,7 @@ import { calculateDetune } from "../components/SamplePiano/utils";
 import Select from "../components/ui/Select";
 import SampleDrumPad from "../components/SampleDrumPad/SampleDrumPad";
 import { Stack } from "@chakra-ui/react";
+import { ALL_SAFE_NODE_ICONS } from "./icons";
 
 export type SampleData = {
   buffer: AudioBuffer;
@@ -93,7 +94,9 @@ const Sample = ({ id, data }: Props) => {
 
   return (
     <NodeContainer maxWidth="375px">
-      <NodeHeading>Sample Node</NodeHeading>
+      <NodeHeading icon={ALL_SAFE_NODE_ICONS["sample"]}>
+        Sample Node
+      </NodeHeading>
       <NodeContent>
         <SampleDropzone buffer={data.buffer} setBuffer={setBuffer} />
         {data.buffer && (

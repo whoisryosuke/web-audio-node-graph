@@ -9,19 +9,25 @@ import Slider from "../components/ui/Slider";
 import NodeInputField from "../components/nodes/NodeInputField";
 import Select from "../components/ui/Select";
 import NodeHandle from "../components/nodes/NodeHandle";
+import { ALL_SAFE_NODE_ICONS } from "./icons";
+
+type OscillatorNodeData = {
+  frequency: number;
+  type: OscillatorNode["type"];
+};
 
 type Props = {
   id: string;
-  data: Partial<Node>;
+  data: OscillatorNodeData;
 };
 
 const Oscillator = ({ id, data }: Props) => {
   const { updateNode } = useNodeStore();
 
-  const setFrequency = (e: any) => {
+  const setFrequency = (e: { value: number[] }) => {
     updateNode(id, { frequency: +e.value });
   };
-  const setType = (e: any) => {
+  const setType = (e: { value: string[] }) => {
     updateNode(id, { type: e.value[0] });
   };
 
@@ -34,7 +40,9 @@ const Oscillator = ({ id, data }: Props) => {
 
   return (
     <NodeContainer>
-      <NodeHeading>Oscillator Node</NodeHeading>
+      <NodeHeading icon={ALL_SAFE_NODE_ICONS["osc"]}>
+        Oscillator Node
+      </NodeHeading>
       <NodeContent>
         <NodeInputField label="Frequency" helper={`${data.frequency}Hz`}>
           <Slider

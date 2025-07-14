@@ -10,6 +10,7 @@ import NodeHandle from "../components/nodes/NodeHandle";
 import NodeInput from "../components/nodes/NodeInput";
 import NodeOutput from "../components/nodes/NodeOutput";
 import { getAudioSetup } from "../services/audio/audio-graph";
+import { ALL_SAFE_NODE_ICONS } from "./icons";
 
 export type ConstantSourceData = {
   offset: number;
@@ -42,7 +43,9 @@ const Bitcrusher = ({ id, data }: Props) => {
 
   return (
     <NodeContainer>
-      <NodeHeading color="purple">Bitcrusher Node</NodeHeading>
+      <NodeHeading color="purple" icon={ALL_SAFE_NODE_ICONS["bitcrusher"]}>
+        Bitcrusher Node
+      </NodeHeading>
       <NodeInput />
       <NodeOutput />
       <NodeContent>
