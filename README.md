@@ -91,6 +91,8 @@ Add your input element/component - like say, a `<Slider>` for controlling a numb
 />
 ```
 
+> We use Chakra UI, but they use a lot of composition for complex components, so you'll find a few wrappers in `/components/ui`. Otherwise just import directly from Chakra UI's React package.
+
 To update the node with new data, we access the node store using the `useNodeStore()` hook and use it's `updateNode()` function. This takes a node ID (which we get from the component props), and the new data we want to update it with. In this case, we'll update the `data.gain` property with the new value from our slider. We also provide the node's data `type`, so the `updateNode()` function knows the shape of data we're updating.
 
 ```tsx
