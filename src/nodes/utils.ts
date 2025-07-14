@@ -16,6 +16,9 @@ function createGainNode() {
 function createAnalyserNode() {
   return { label: "Analyser" };
 }
+function createDelayNode() {
+  return { label: "Delay", delayTime: 0.42 };
+}
 function createConstantSourceNode() {
   return { label: "Constant Source", offset: 42.0 };
 }
@@ -55,6 +58,9 @@ export function createNode(
       break;
     case "analyser":
       baseData = createAnalyserNode();
+      break;
+    case "delay":
+      baseData = createDelayNode();
       break;
     case "constant-source":
       baseData = createConstantSourceNode();
