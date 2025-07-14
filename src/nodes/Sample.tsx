@@ -99,7 +99,7 @@ const Sample = ({ id, data }: Props) => {
         {data.buffer && (
           <Stack>
             <Select
-              name="Piano Type"
+              // name="Piano Type"
               value={[currentViz]}
               onValueChange={handleChange}
               options={options}

@@ -13,7 +13,7 @@ type Props = Partial<SelectRootProps> & {
     value: string;
     label: string;
   }[];
-  name: string;
+  name?: string;
   placeholder: string;
 };
 
@@ -34,7 +34,7 @@ const Select = ({ options, name, placeholder, ...props }: Props) => {
       {...props}
     >
       <ChakraSelect.HiddenSelect />
-      <ChakraSelect.Label>{name}</ChakraSelect.Label>
+      {name && <ChakraSelect.Label>{name}</ChakraSelect.Label>}
       <ChakraSelect.Control>
         <ChakraSelect.Trigger>
           <ChakraSelect.ValueText placeholder={placeholder} />
