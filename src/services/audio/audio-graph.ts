@@ -236,6 +236,13 @@ export function reconnectNode(audioNodeKey: string) {
   });
 }
 
+export function resetAudioNodes() {
+  for (const node in audioNodes) {
+    audioNodes.delete(node);
+    // Maybe close audio context and re-open to stop any lingering audio signals
+  }
+}
+
 export function playAudio() {
   // Resume the audio context if needed
   context.resume();

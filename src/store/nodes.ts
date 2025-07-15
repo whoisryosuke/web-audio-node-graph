@@ -15,9 +15,19 @@ import {
   connectAudioNodes,
   createAudioNode,
   removeAudioNode,
+  resetAudioNodes,
   updateAudioNode,
 } from "../services/audio/audio-graph";
 import type { Vector2D } from "../utils/types";
+
+const DEFAULT_NODES = [
+  {
+    id: "output",
+    type: "output",
+    data: { label: "output" },
+    position: { x: -50, y: 100 },
+  },
+];
 
 export interface NodeStoreState {
   nodes: Node[];
@@ -34,6 +44,7 @@ export interface NodeStoreState {
   deleteEdge: (edgeId: Edge["id"]) => void;
   addEdge: (data: Partial<Edge>) => void;
   updateNode: <T>(id: string, data: T) => void;
+  newFile: () => void;
 
   selectedEdge: Edge;
   setSelectedEdge: (edge: Edge) => void;
@@ -41,26 +52,7 @@ export interface NodeStoreState {
 
 export const useNodeStore = create<NodeStoreState>()(
   devtools((set) => ({
-    nodes: [
-      // {
-      //   id: "a",
-      //   type: "osc",
-      //   data: { label: "oscillator" },
-      //   position: { x: 0, y: 0 },
-      // },
-      // {
-      //   id: "b",
-      //   type: "gain",
-      //   data: { label: "gain" },
-      //   position: { x: 50, y: 50 },
-      // },
-      {
-        id: "output",
-        type: "output",
-        data: { label: "output" },
-        position: { x: -50, y: 100 },
-      },
-    ],
+    nodes: [...DEFAULT_NODES],
     edges: [],
 
     addNode: (
@@ -130,6 +122,14 @@ export const useNodeStore = create<NodeStoreState>()(
         nodes: state.nodes.map((node) =>
           node.id === id ? { ...node, data: { ...node.data, ...data } } : node
         ),
+      }));
+    },
+
+    newFile: () => {
+      resetAudioNodes();
+      set(() => ({
+        edges: [],
+        nodes: [...DEFAULT_NODES],
       }));
     },
 

@@ -8,6 +8,8 @@ import NodePopup from "./components/NodePopup/NodePopup";
 import { useCallback } from "react";
 import { useAppStore } from "./store/app";
 import Footer from "./components/Footer/Footer";
+import MenuBar from "./components/MenuBar/MenuBar";
+import Modal from "./components/Modal/Modal";
 
 // const selector = (store: NodeStoreState) => ({
 //   nodes: store.nodes,
@@ -59,10 +61,12 @@ function App() {
         <Background color="#555" />
       </ReactFlow>
       {/* <Sidebar /> */}
+      <MenuBar />
       <Hotkeys />
       <TrackMouse />
       <NodePopup />
       <Footer />
+      <Modal />
     </>
   );
 }
