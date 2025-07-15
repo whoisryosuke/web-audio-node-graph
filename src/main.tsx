@@ -4,7 +4,6 @@ import "@xyflow/react/dist/style.css";
 import "./styles/flow-reset.css";
 import App from "./App.tsx";
 import { ReactFlowProvider } from "@xyflow/react";
-import { ChakraProvider } from "@chakra-ui/react";
 import { Provider } from "./components/ui/provider.tsx";
 
 createRoot(document.getElementById("root")!).render(
