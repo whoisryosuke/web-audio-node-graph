@@ -1,9 +1,22 @@
-import { Button, HStack, Stack } from "@chakra-ui/react";
+import { Button, HStack, Stack, Text } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 import { Chord, Midi, Note } from "tonal";
 import ArpeggioSlider from "./ArpeggioSlider";
+import Select, { type SelectOption } from "../../ui/Select";
+import { NOTES_ALL_IN_ORDER } from "../../SamplePiano/constants";
+import Slider from "../../ui/Slider";
 
 const CHECK_AHEAD_TIME_MS = 250;
+const OCTAVES = new Array(8).fill(0).map((_, index) => ({
+  value: index + 1,
+  label: index + 1,
+})) as SelectOption[];
+const NOTE_OPTIONS = NOTES_ALL_IN_ORDER.map((note) => {
+  return {
+    value: note,
+    label: note,
+  };
+}) as SelectOption[];
 
 type Props = {
   playSample: (note: string, octave: number, time?: number) => void;
@@ -11,7 +24,7 @@ type Props = {
 
 const ArpeggioSampler = ({ playSample, ...props }: Props) => {
   const [rootNote, setRootNote] = useState("C");
-  const [octave, setOctave] = useState("4");
+  const [octave, setOctave] = useState(4);
   const [currentChord, setCurrentChord] = useState("maj7");
   // Notes in MIDI format. Makes it easier for the slider.
   const [notes, setNotes] = useState<number[]>([]);
@@ -52,6 +65,10 @@ const ArpeggioSampler = ({ playSample, ...props }: Props) => {
     setPlaying((prev) => !prev);
   };
 
+  const handleOctave = (e: { value: number[] }) => {
+    setOctave(e.value[0]);
+  };
+
   const animate = (timestamp: number) => {
     if (!startTime.current) {
       startTime.current = timestamp;
@@ -69,9 +86,9 @@ const ArpeggioSampler = ({ playSample, ...props }: Props) => {
       const currentNote = notes[currentNoteIndexRef.current];
       const pianoNote = Note.fromMidi(currentNote);
       const rootNote = pianoNote.slice(0, -1);
-      const octave = parseInt(pianoNote.slice(-1));
+      const noteOctave = parseInt(pianoNote.slice(-1));
       const offset = nextNoteTime.current - time.current;
-      playSample(rootNote, octave, offset);
+      playSample(rootNote, noteOctave, offset);
 
       // Increment note index
       nextNoteTime.current += msPerBeat;
@@ -119,6 +136,18 @@ const ArpeggioSampler = ({ playSample, ...props }: Props) => {
 
   return (
     <Stack>
+      <Select
+        options={NOTE_OPTIONS}
+        value={[rootNote]}
+        placeholder="Select a root note"
+      />
+      <Stack>
+        <HStack>
+          <Text fontSize="2xs">Octave</Text>
+          <Text fontSize="sm">{octave}</Text>
+        </HStack>
+        <Slider min={1} max={8} value={[octave]} onValueChange={handleOctave} />
+      </Stack>
       <HStack>{sliders}</HStack>
       <HStack>
         <Button size="2xs" variant="surface" onClick={handlePlay}>

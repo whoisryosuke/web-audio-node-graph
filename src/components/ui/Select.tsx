@@ -8,11 +8,13 @@ import {
 } from "@chakra-ui/react";
 import { useMemo } from "react";
 
+export type SelectOption = {
+  value: string | number;
+  label: string | number;
+};
+
 type Props = Partial<SelectRootProps> & {
-  options: {
-    value: string;
-    label: string;
-  }[];
+  options: SelectOption[];
   name?: string;
   placeholder: string;
 };
