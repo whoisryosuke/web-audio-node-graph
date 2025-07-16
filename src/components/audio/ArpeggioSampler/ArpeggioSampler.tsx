@@ -69,6 +69,10 @@ const ArpeggioSampler = ({ playSample, ...props }: Props) => {
     setOctave(e.value[0]);
   };
 
+  const handleRootNote = (e: { value: string[] }) => {
+    setRootNote(e.value[0]);
+  };
+
   const animate = (timestamp: number) => {
     if (!startTime.current) {
       startTime.current = timestamp;
@@ -140,6 +144,7 @@ const ArpeggioSampler = ({ playSample, ...props }: Props) => {
         options={NOTE_OPTIONS}
         value={[rootNote]}
         placeholder="Select a root note"
+        onValueChange={handleRootNote}
       />
       <Stack>
         <HStack>
