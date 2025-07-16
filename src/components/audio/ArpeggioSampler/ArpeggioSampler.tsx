@@ -13,12 +13,16 @@ const ArpeggioSampler = ({ playSample, ...props }: Props) => {
   const [rootNote, setRootNote] = useState("C");
   const [octave, setOctave] = useState("4");
   const [currentChord, setCurrentChord] = useState("maj7");
+  // Notes in MIDI format. Makes it easier for the slider.
   const [notes, setNotes] = useState<number[]>([]);
   const [bpm, setBpm] = useState(60);
+  // The currently playing note index (in the `notes` array)
   const [currentNoteIndex, setCurrentNoteIndex] = useState(0);
+  // We keep a separate ref so the animation callback can keep track
+  // This can be thought of as the next note index
+  const currentNoteIndexRef = useRef(0);
   const [playing, setPlaying] = useState(false);
   const playingRef = useRef(false);
-  const currentNoteIndexRef = useRef(0);
   const time = useRef(0);
   const startTime = useRef(0);
   const nextNoteTime = useRef(0);
@@ -95,6 +99,7 @@ const ArpeggioSampler = ({ playSample, ...props }: Props) => {
       time.current = 0;
       startTime.current = 0;
       nextNoteTime.current = 0;
+      currentNoteIndexRef.current = 0;
       setCurrentNoteIndex(0);
     }
 
