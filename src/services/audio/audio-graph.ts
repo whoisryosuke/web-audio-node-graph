@@ -86,6 +86,7 @@ export function createAudioNode(type: CustomNodeTypesNames, id: string) {
     case "delay":
       createDelayNode(id);
       break;
+    case "arpeggio":
     case "sample":
       createSampleNode(id);
       break;
@@ -115,12 +116,12 @@ function getAudioParamsFromHandles(
   if (targetHandle && targetNode) {
     if (targetHandle in targetNode) {
       const audioParam = targetHandle as keyof AudioNode;
-      console.log(
-        "target handle found",
-        targetNode,
-        targetHandle,
-        targetNode[audioParam]
-      );
+      // console.log(
+      //   "target handle found",
+      //   targetNode,
+      //   targetHandle,
+      //   targetNode[audioParam]
+      // );
       targetRef = targetNode[audioParam] as unknown as AudioParam;
     }
   }
@@ -136,8 +137,8 @@ export function connectAudioNodes(
 ) {
   const sourceNode = audioNodes.get(source)?.node;
   const targetNode = audioNodes.get(target)?.node;
-  console.log("connecting nodes", "source:", source, "target:", target);
-  console.log("connecting nodes", "source:", sourceNode, "target:", targetNode);
+  // console.log("connecting nodes", "source:", source, "target:", target);
+  // console.log("connecting nodes", "source:", sourceNode, "target:", targetNode);
 
   // Check if we have a source node - kinda critical for everything
   if (!sourceNode) return;
@@ -150,7 +151,7 @@ export function connectAudioNodes(
 
   // Check if we have a target node - also critical for everything else past this point
   if (!targetNode) return;
-  console.log("connecting nodes - past checkpoint!", source, target);
+  // console.log("connecting nodes - past checkpoint!", source, target);
 
   // Handle connections to node parameters vs nodes (aka "handles")
   const targetRef = getAudioParamsFromHandles(targetNode, targetHandle);
@@ -274,4 +275,8 @@ export function getAudioNode(id: string) {
 
 export function getAudioSetup(id: string) {
   return audioNodes.get(id);
+}
+
+export function getCurrentTime() {
+  return context.currentTime;
 }

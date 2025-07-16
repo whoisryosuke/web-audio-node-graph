@@ -9,6 +9,7 @@ import SampleDropzone from "../components/SampleDropzone/SampleDropzone";
 import SamplePiano from "../components/SamplePiano/SamplePiano";
 import {
   getAudioNode,
+  getCurrentTime,
   reconnectNode,
   recreateSampleNode,
 } from "../services/audio/audio-graph";
@@ -35,14 +36,15 @@ const Arpeggio = ({ id, data }: Props) => {
     updateNode(id, { buffer: newAudioBuffer });
   };
 
-  const playSample = (note: string, octave: number) => {
+  const playSample = (note: string, octave: number, offsetTime: number = 0) => {
     const node = getAudioNode(id) as AudioBufferSourceNode;
     if (!node) return;
 
     node.detune.value = calculateDetune(note, octave);
-    console.log("starting buffer node", node);
     // Play the sound
-    node.start();
+    const now = getCurrentTime();
+    const offset = offsetTime / 1000;
+    node.start(now + offset);
 
     // Recreate the buffer node and reconnect it as needed
     recreateSampleNode(id, data);
@@ -56,7 +58,7 @@ const Arpeggio = ({ id, data }: Props) => {
       </NodeHeading>
       <NodeContent>
         <SampleDropzone buffer={data.buffer} setBuffer={setBuffer} />
-        {data.buffer && <ArpeggioSampler />}
+        {data.buffer && <ArpeggioSampler playSample={playSample} />}
       </NodeContent>
 
       <NodeHandle type="source" position={Position.Right} />
