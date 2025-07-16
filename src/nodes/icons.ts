@@ -4,6 +4,7 @@ import type { IconType } from "react-icons";
 import { SlGraph } from "react-icons/sl";
 import { TbCircleNumber4, TbClock, TbMusic, TbWaveSine } from "react-icons/tb";
 import { PiStepsBold, PiWaveSineBold } from "react-icons/pi";
+import { GiSoundWaves } from "react-icons/gi";
 
 export const ALL_SAFE_NODE_ICONS: Record<
   keyof typeof ALL_SAFE_NODE_TYPES,
@@ -18,4 +19,5 @@ export const ALL_SAFE_NODE_ICONS: Record<
   "wave-shaper": PiWaveSineBold,
   bitcrusher: PiStepsBold,
   arpeggio: TbMusic,
+  "white-noise": GiSoundWaves,
 };

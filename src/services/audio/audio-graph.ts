@@ -3,6 +3,7 @@ import type { CustomNodeTypesNames } from "../../nodes";
 import { useNodeStore } from "../../store/nodes";
 import { generateWaveShaperCurve } from "../../utils/audio/wave-shaper";
 import { createBitcrusherNode, type BitcrusherNode } from "clawdio";
+import { createWhiteNoiseBufferNode } from "./noise";
 
 type CustomNodes = BitcrusherNode;
 
@@ -72,6 +73,12 @@ const createBitcrusherWorklet = async (id: string) => {
   audioNodes.set(id, { node: bitcrusher.node, instance: bitcrusher });
 };
 
+const createWhiteNoiseNode = (id: string) => {
+  const node = createWhiteNoiseBufferNode(context);
+
+  audioNodes.set(id, { node });
+};
+
 export function createAudioNode(type: CustomNodeTypesNames, id: string) {
   switch (type) {
     case "osc":
@@ -88,6 +95,7 @@ export function createAudioNode(type: CustomNodeTypesNames, id: string) {
       break;
     case "arpeggio":
     case "sample":
+    case "white-noise":
       createSampleNode(id);
       break;
     case "constant-source":

@@ -40,6 +40,11 @@ function createArpeggioNode() {
     label: "Arpeggio",
   };
 }
+function createWhiteNoiseNode() {
+  return {
+    label: "White Noise",
+  };
+}
 
 export function createNode(
   type: CustomNodeTypesNames,
@@ -77,6 +82,9 @@ export function createNode(
       baseData = createBitcrusherNode();
       break;
     case "arpeggio":
+      baseData = createArpeggioNode();
+      break;
+    case "white-noise":
       baseData = createArpeggioNode();
       break;
   }
