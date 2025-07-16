@@ -35,6 +35,11 @@ function createBitcrusherNode() {
     // bits
   };
 }
+function createArpeggioNode() {
+  return {
+    label: "Arpeggio",
+  };
+}
 
 export function createNode(
   type: CustomNodeTypesNames,
@@ -70,6 +75,9 @@ export function createNode(
       break;
     case "bitcrusher":
       baseData = createBitcrusherNode();
+      break;
+    case "arpeggio":
+      baseData = createArpeggioNode();
       break;
   }
   newNode.data = {

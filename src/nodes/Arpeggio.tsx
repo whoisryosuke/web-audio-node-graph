@@ -1,0 +1,67 @@
+import { Position, type Node } from "@xyflow/react";
+import NodeContainer from "../components/nodes/NodeContainer";
+import NodeHeading from "../components/nodes/NodeHeading";
+import NodeContent from "../components/nodes/NodeContent";
+import NodeHandle from "../components/nodes/NodeHandle";
+import { useNodeStore } from "../store/nodes";
+import { useEffect, useState } from "react";
+import SampleDropzone from "../components/SampleDropzone/SampleDropzone";
+import SamplePiano from "../components/SamplePiano/SamplePiano";
+import {
+  getAudioNode,
+  reconnectNode,
+  recreateSampleNode,
+} from "../services/audio/audio-graph";
+import { calculateDetune } from "../components/SamplePiano/utils";
+import Select from "../components/ui/Select";
+import SampleDrumPad from "../components/SampleDrumPad/SampleDrumPad";
+import { Stack } from "@chakra-ui/react";
+import { ALL_SAFE_NODE_ICONS } from "./icons";
+import ArpeggioSampler from "../components/audio/ArpeggioSampler/ArpeggioSampler";
+
+export type SampleData = {
+  buffer: AudioBuffer;
+};
+
+type Props = {
+  id: string;
+  data: SampleData;
+};
+
+const Arpeggio = ({ id, data }: Props) => {
+  const { updateNode } = useNodeStore();
+
+  const setBuffer = (newAudioBuffer: AudioBuffer) => {
+    updateNode(id, { buffer: newAudioBuffer });
+  };
+
+  const playSample = (note: string, octave: number) => {
+    const node = getAudioNode(id) as AudioBufferSourceNode;
+    if (!node) return;
+
+    node.detune.value = calculateDetune(note, octave);
+    console.log("starting buffer node", node);
+    // Play the sound
+    node.start();
+
+    // Recreate the buffer node and reconnect it as needed
+    recreateSampleNode(id, data);
+    reconnectNode(id);
+  };
+
+  return (
+    <NodeContainer maxWidth="375px">
+      <NodeHeading icon={ALL_SAFE_NODE_ICONS["sample"]}>
+        Arpeggio Node
+      </NodeHeading>
+      <NodeContent>
+        <SampleDropzone buffer={data.buffer} setBuffer={setBuffer} />
+        {data.buffer && <ArpeggioSampler />}
+      </NodeContent>
+
+      <NodeHandle type="source" position={Position.Right} />
+    </NodeContainer>
+  );
+};
+
+export default Arpeggio;
