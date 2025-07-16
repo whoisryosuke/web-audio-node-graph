@@ -95,6 +95,7 @@ const ArpeggioSampler = ({ playSample, ...props }: Props) => {
       time.current = 0;
       startTime.current = 0;
       nextNoteTime.current = 0;
+      setCurrentNoteIndex(0);
     }
 
     return () => {
