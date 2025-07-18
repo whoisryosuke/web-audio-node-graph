@@ -1,13 +1,24 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import type { Vector2D } from "../utils/types";
+import type { ConnectionState, HandleType } from "@xyflow/react";
+import type { Handle } from "@xyflow/system";
 
 export type ModalOptions = "keyboard";
+export type ConnectionPendingState = {
+  node: string;
+  handleId: Handle["id"];
+  handleType: HandleType;
+};
 
 export interface AppStoreState {
   showNodePopup: boolean;
   toggleNodePopup: () => void;
   setNodePopup: (showNodePopup: boolean) => void;
+
+  connectionPending: ConnectionPendingState | null;
+  setConnectionPending: (connectionPending: ConnectionPendingState) => void;
+  clearConnectionPending: () => void;
 
   modal: ModalOptions;
   modalVisible: boolean;
@@ -28,6 +39,16 @@ export const useAppStore = create<AppStoreState>()(
     setNodePopup: (showNodePopup) =>
       set({
         showNodePopup,
+      }),
+
+    connectionPending: false,
+    setConnectionPending: (connectionPending) =>
+      set({
+        connectionPending,
+      }),
+    clearConnectionPending: () =>
+      set({
+        connectionPending: null,
       }),
 
     modal: "keyboard",

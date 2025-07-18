@@ -1,4 +1,11 @@
-import { Background, Controls, ReactFlow, type Edge } from "@xyflow/react";
+import {
+  Background,
+  Controls,
+  ReactFlow,
+  type ConnectionState,
+  type Edge,
+  type OnConnectEnd,
+} from "@xyflow/react";
 import { useNodeStore, type NodeStoreState } from "./store/nodes";
 import ALL_NODE_TYPES from "./nodes";
 import Sidebar from "./components/Sidebar/Sidebar";
@@ -20,7 +27,7 @@ import Modal from "./components/Modal/Modal";
 // });
 
 function App() {
-  const { setNodePopup } = useAppStore();
+  const { setNodePopup, setConnectionPending } = useAppStore();
   const {
     nodes,
     edges,
@@ -30,10 +37,19 @@ function App() {
     setSelectedEdge,
   } = useNodeStore();
 
-  const onConnectEnd = useCallback((event, connectionState) => {
+  const onConnectEnd: OnConnectEnd = useCallback((event, connectionState) => {
     // when a connection is dropped on the pane it's not valid
     if (!connectionState.isValid) {
+      // Open popup menu
       setNodePopup(true);
+
+      // Save last node info so we can connect later
+      if (!connectionState.fromNode || !connectionState.fromHandle) return;
+      setConnectionPending({
+        node: connectionState.fromNode.id,
+        handleId: connectionState.fromHandle.id,
+        handleType: connectionState.fromHandle.type,
+      });
     }
   }, []);
 

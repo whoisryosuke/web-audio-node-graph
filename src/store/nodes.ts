@@ -5,6 +5,7 @@ import {
   type Node,
   type EdgeChange,
   type Edge,
+  Handle,
 } from "@xyflow/react";
 import { nanoid } from "nanoid";
 import { create } from "zustand";
@@ -29,6 +30,13 @@ const DEFAULT_NODES = [
   },
 ];
 
+export type EdgeData = {
+  source: string;
+  sourceHandle: Handle["id"];
+  target: string;
+  targetHandle: Handle["id"];
+};
+
 export interface NodeStoreState {
   nodes: Node[];
   edges: Edge[];
@@ -37,7 +45,7 @@ export interface NodeStoreState {
     type: CustomNodeTypesNames,
     position?: Vector2D,
     data?: Partial<Node>
-  ) => void;
+  ) => string;
   onNodesDelete: (deleted: Node[]) => void;
   onNodesChange: (changes: NodeChange<Node>[]) => void;
   onEdgesChange: (changes: EdgeChange<Edge>[]) => void;
@@ -68,6 +76,8 @@ export const useNodeStore = create<NodeStoreState>()(
       set((state) => ({
         nodes: [...state.nodes, newNode],
       }));
+
+      return newNode.id;
     },
 
     // @TODO: Remove from store - move to audio graph
@@ -94,7 +104,7 @@ export const useNodeStore = create<NodeStoreState>()(
       }));
     },
 
-    addEdge: (data: Partial<Edge>) => {
+    addEdge: (data: EdgeData) => {
       const id = nanoid(6);
       const edge = { id, ...data } as Edge;
 

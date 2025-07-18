@@ -14,6 +14,7 @@ import {
   useInputText,
 } from "../../styles/colors";
 import { ALL_SAFE_NODE_ICONS } from "../../nodes/icons";
+import type { Edge } from "@xyflow/react";
 
 type Props = {
   search: string;
@@ -21,15 +22,31 @@ type Props = {
 };
 
 const NodeList = ({ search, setSearch }: Props) => {
-  const { mousePosition, setNodePopup } = useAppStore();
-  const { addNode } = useNodeStore();
+  const {
+    mousePosition,
+    setNodePopup,
+    connectionPending,
+    clearConnectionPending,
+  } = useAppStore();
+  const { addNode, addEdge } = useNodeStore();
   const iconColor = useInputText();
 
   const handleAddNode = (type: CustomNodeTypesNames) => {
-    addNode(type, mousePosition, {});
+    const newNodeId = addNode(type, mousePosition, {});
 
     // Close popup
     setNodePopup(false);
+
+    // Connect to node if necessary
+    console.log("creating connection", connectionPending, newNodeId);
+    const edge: Partial<Edge> = {
+      source: connectionPending?.node,
+      sourceHandle: null,
+      target: newNodeId,
+      targetHandle: connectionPending?.handleId,
+    };
+    addEdge(edge);
+    clearConnectionPending();
 
     // Reset search
     setSearch("");

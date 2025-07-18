@@ -7,6 +7,8 @@ import Waveform from "../components/audio/Waveform";
 import Select from "../components/ui/Select";
 import { useState } from "react";
 import FrequencyBars from "../components/audio/FrequencyBars";
+import NodeInput from "../components/nodes/NodeInput";
+import NodeOutput from "../components/nodes/NodeOutput";
 
 type Props = {
   id: string;
@@ -21,15 +23,15 @@ const VIZ_OPTIONS = ["Waveform", "FrequencyBars"] as const;
 type VizOptions = (typeof VIZ_OPTIONS)[number];
 
 const Analyser = ({ id, data }: Props) => {
-  const [currentViz, setCurrentViz] = useState<VizOptions>("Waveform");
+  const [currentViz, setCurrentViz] = useState<VizOptions>(VIZ_OPTIONS[0]);
   const options = VIZ_OPTIONS.map((nodeType) => ({
     value: nodeType,
     label: nodeType,
   }));
 
   const handleChange = (e: any) => {
-    console.log("changing viz", e);
-    setCurrentViz(e.value);
+    console.log("changing viz ", e);
+    setCurrentViz(e.value[0]);
   };
 
   const VizComponent = VIZ_COMPONENTS[currentViz];
