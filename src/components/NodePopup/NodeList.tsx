@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ALL_NODE_TYPES, {
   ALL_SAFE_NODE_NAMES,
   ALL_SAFE_NODE_TYPES,
@@ -24,6 +24,7 @@ type Props = {
 };
 
 const NodeList = ({ search, setSearch }: Props) => {
+  const [disabled, setDisabled] = useState(false);
   const {
     mousePosition,
     setNodePopup,
@@ -34,6 +35,7 @@ const NodeList = ({ search, setSearch }: Props) => {
   const iconColor = useInputText();
 
   const handleAddNode = async (type: CustomNodeTypesNames) => {
+    setDisabled(true);
     const newNodeId = await addNode(type, mousePosition, {});
 
     // Close popup
@@ -67,6 +69,8 @@ const NodeList = ({ search, setSearch }: Props) => {
 
     // Reset search
     setSearch("");
+
+    setDisabled(false);
   };
 
   // We check all the names and see if any match
@@ -87,6 +91,7 @@ const NodeList = ({ search, setSearch }: Props) => {
         key={nodeType}
         variant="subtle"
         justifyContent="flex-start"
+        disabled={disabled}
         onClick={() => handleAddNode(nodeType)}
       >
         <Icon color={iconColor}>
