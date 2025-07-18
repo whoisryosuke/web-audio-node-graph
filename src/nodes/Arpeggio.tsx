@@ -20,6 +20,7 @@ import { Stack } from "@chakra-ui/react";
 import { ALL_SAFE_NODE_ICONS } from "./icons";
 import ArpeggioSampler from "../components/audio/ArpeggioSampler/ArpeggioSampler";
 import NodeOutput from "../components/nodes/NodeOutput";
+import type { NodeIO } from "./types";
 
 export type SampleData = {
   buffer: AudioBuffer;
@@ -65,6 +66,11 @@ const Arpeggio = ({ id, data }: Props) => {
       <NodeOutput />
     </NodeContainer>
   );
+};
+
+export const ArpeggioIO: NodeIO = {
+  inputs: [],
+  outputs: ["node"],
 };
 
 export default Arpeggio;

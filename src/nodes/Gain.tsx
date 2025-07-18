@@ -11,6 +11,7 @@ import { Box, Text } from "@chakra-ui/react";
 import NodeInput from "../components/nodes/NodeInput";
 import NodeOutput from "../components/nodes/NodeOutput";
 import { ALL_SAFE_NODE_ICONS } from "./icons";
+import type { NodeIO } from "./types";
 
 export type GainData = {
   gain: number;
@@ -50,6 +51,11 @@ const Gain = ({ id, data }: Props) => {
       </NodeContent>
     </NodeContainer>
   );
+};
+
+export const GainIO: NodeIO = {
+  inputs: ["node", "gain"],
+  outputs: ["node"],
 };
 
 export default Gain;

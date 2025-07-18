@@ -3,53 +3,35 @@
  * This is used for determine if a node can even be connected to - and how.
  */
 
-import type { AllSafeNodeTypes } from ".";
+import type { AllNodeTypes, AllSafeNodeTypes } from ".";
+import { AnalyserIO } from "./Analyser";
+import { ArpeggioIO } from "./Arpeggio";
+import { BitcrusherIO } from "./Bitcrusher";
 import { ConstantSourceIO } from "./ConstantSource";
+import { DelayIO } from "./Delay";
+import { GainIO } from "./Gain";
+import { MoogIO } from "./Moog";
+import { OscillatorIO } from "./Oscillator";
+import { PinkNoiseIO } from "./PinkNoise";
+import { SampleIO } from "./Sample";
 import type { NodeIO } from "./types";
+import { WaveShaperIO } from "./WaveShaper";
+import { WhiteNoiseIO } from "./WhiteNoise";
 
-const NODE_CONNECTION_MAP: Record<AllSafeNodeTypes, NodeIO> = {
+const NODE_CONNECTION_MAP: Record<AllNodeTypes, NodeIO> = {
   "constant-source": ConstantSourceIO,
-  osc: {
-    inputs: [],
-    outputs: [],
-  },
-  gain: {
-    inputs: [],
-    outputs: [],
-  },
-  analyser: {
-    inputs: [],
-    outputs: [],
-  },
-  delay: {
-    inputs: [],
-    outputs: [],
-  },
-  sample: {
-    inputs: [],
-    outputs: [],
-  },
-  "wave-shaper": {
-    inputs: [],
-    outputs: [],
-  },
-  bitcrusher: {
-    inputs: [],
-    outputs: [],
-  },
-  arpeggio: {
-    inputs: [],
-    outputs: [],
-  },
-  "white-noise": {
-    inputs: [],
-    outputs: [],
-  },
-  "pink-noise": {
-    inputs: [],
-    outputs: [],
-  },
-  moog: {
+  osc: OscillatorIO,
+  gain: GainIO,
+  analyser: AnalyserIO,
+  delay: DelayIO,
+  sample: SampleIO,
+  "wave-shaper": WaveShaperIO,
+  bitcrusher: BitcrusherIO,
+  arpeggio: ArpeggioIO,
+  "white-noise": WhiteNoiseIO,
+  "pink-noise": PinkNoiseIO,
+  moog: MoogIO,
+  output: {
     inputs: [],
     outputs: [],
   },

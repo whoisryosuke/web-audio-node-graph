@@ -11,6 +11,7 @@ import Select from "../components/ui/Select";
 import NodeHandle from "../components/nodes/NodeHandle";
 import { ALL_SAFE_NODE_ICONS } from "./icons";
 import NodeOutput from "../components/nodes/NodeOutput";
+import type { NodeIO } from "./types";
 
 type OscillatorNodeData = {
   frequency: number;
@@ -68,6 +69,11 @@ const Oscillator = ({ id, data }: Props) => {
       </NodeContent>
     </NodeContainer>
   );
+};
+
+export const OscillatorIO: NodeIO = {
+  inputs: [],
+  outputs: ["node"],
 };
 
 export default Oscillator;

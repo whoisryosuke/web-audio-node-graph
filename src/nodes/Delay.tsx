@@ -10,6 +10,7 @@ import NodeHandle from "../components/nodes/NodeHandle";
 import NodeInput from "../components/nodes/NodeInput";
 import NodeOutput from "../components/nodes/NodeOutput";
 import { ALL_SAFE_NODE_ICONS } from "./icons";
+import type { NodeIO } from "./types";
 
 type DelayNodeData = {
   delayTime: number;
@@ -48,6 +49,11 @@ const Delay = ({ id, data }: Props) => {
       </NodeContent>
     </NodeContainer>
   );
+};
+
+export const DelayIO: NodeIO = {
+  inputs: ["node", "delayTime"],
+  outputs: ["node"],
 };
 
 export default Delay;

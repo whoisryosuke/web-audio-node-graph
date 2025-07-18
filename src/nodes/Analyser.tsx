@@ -9,6 +9,7 @@ import { useState } from "react";
 import FrequencyBars from "../components/audio/FrequencyBars";
 import NodeInput from "../components/nodes/NodeInput";
 import NodeOutput from "../components/nodes/NodeOutput";
+import type { NodeIO } from "./types";
 
 type Props = {
   id: string;
@@ -53,6 +54,11 @@ const Analyser = ({ id, data }: Props) => {
       </NodeContent>
     </NodeContainer>
   );
+};
+
+export const AnalyserIO: NodeIO = {
+  inputs: ["node"],
+  outputs: ["node"],
 };
 
 export default Analyser;

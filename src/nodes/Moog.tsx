@@ -4,6 +4,7 @@ import NodeContent from "../components/nodes/NodeContent";
 import NodeOutput from "../components/nodes/NodeOutput";
 import { ALL_SAFE_NODE_ICONS } from "./icons";
 import NodeInput from "../components/nodes/NodeInput";
+import type { NodeIO } from "./types";
 
 export type MoogData = {
   resonance: number;
@@ -26,6 +27,11 @@ const Moog = ({ id, data }: Props) => {
       <NodeContent></NodeContent>
     </NodeContainer>
   );
+};
+
+export const MoogIO: NodeIO = {
+  inputs: ["node"],
+  outputs: ["node"],
 };
 
 export default Moog;

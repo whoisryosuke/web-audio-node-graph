@@ -3,6 +3,7 @@ import NodeHeading from "../components/nodes/NodeHeading";
 import NodeContent from "../components/nodes/NodeContent";
 import NodeOutput from "../components/nodes/NodeOutput";
 import { ALL_SAFE_NODE_ICONS } from "./icons";
+import type { NodeIO } from "./types";
 
 export type ConstantSourceData = {
   offset: number;
@@ -23,6 +24,11 @@ const PinkNoise = ({ id, data }: Props) => {
       <NodeContent></NodeContent>
     </NodeContainer>
   );
+};
+
+export const PinkNoiseIO: NodeIO = {
+  inputs: [],
+  outputs: ["node"],
 };
 
 export default PinkNoise;

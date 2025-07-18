@@ -19,6 +19,7 @@ import { ALL_SAFE_NODE_ICONS } from "./icons";
 import Select from "../components/ui/Select";
 import { Button } from "@chakra-ui/react";
 import { createWhiteNoiseBuffer } from "../services/audio/noise";
+import type { NodeIO } from "./types";
 
 export type WhiteNoiseData = {
   buffer: AudioBuffer;
@@ -87,6 +88,11 @@ const WhiteNoise = ({ id, data }: Props) => {
       </NodeContent>
     </NodeContainer>
   );
+};
+
+export const WhiteNoiseIO: NodeIO = {
+  inputs: [],
+  outputs: ["node"],
 };
 
 export default WhiteNoise;

@@ -10,6 +10,7 @@ import NodeInputField from "../components/nodes/NodeInputField";
 import NodeHandle from "../components/nodes/NodeHandle";
 import NodeInput from "../components/nodes/NodeInput";
 import NodeOutput from "../components/nodes/NodeOutput";
+import type { NodeIO } from "./types";
 
 export type WaveShaperData = {
   offset: number;
@@ -46,6 +47,11 @@ const WaveShaper = ({ id, data }: Props) => {
       </NodeContent> */}
     </NodeContainer>
   );
+};
+
+export const WaveShaperIO: NodeIO = {
+  inputs: ["node"],
+  outputs: ["node"],
 };
 
 export default WaveShaper;

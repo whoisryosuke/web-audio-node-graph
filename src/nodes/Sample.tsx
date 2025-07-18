@@ -18,6 +18,7 @@ import SampleDrumPad from "../components/SampleDrumPad/SampleDrumPad";
 import { Stack } from "@chakra-ui/react";
 import { ALL_SAFE_NODE_ICONS } from "./icons";
 import NodeOutput from "../components/nodes/NodeOutput";
+import type { NodeIO } from "./types";
 
 export type SampleData = {
   buffer: AudioBuffer;
@@ -116,6 +117,11 @@ const Sample = ({ id, data }: Props) => {
       </NodeContent>
     </NodeContainer>
   );
+};
+
+export const SampleIO: NodeIO = {
+  inputs: [],
+  outputs: ["node"],
 };
 
 export default Sample;

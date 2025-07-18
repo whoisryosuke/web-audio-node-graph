@@ -11,6 +11,7 @@ import NodeInput from "../components/nodes/NodeInput";
 import NodeOutput from "../components/nodes/NodeOutput";
 import { getAudioSetup } from "../services/audio/audio-graph";
 import { ALL_SAFE_NODE_ICONS } from "./icons";
+import type { NodeIO } from "./types";
 
 export type ConstantSourceData = {
   offset: number;
@@ -80,6 +81,11 @@ const Bitcrusher = ({ id, data }: Props) => {
       </NodeContent>
     </NodeContainer>
   );
+};
+
+export const BitcrusherIO: NodeIO = {
+  inputs: ["node"],
+  outputs: ["node"],
 };
 
 export default Bitcrusher;

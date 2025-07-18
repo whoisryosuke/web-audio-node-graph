@@ -31,6 +31,7 @@ const { output: _, ...safeNodeTypes } = {
   ...ALL_NODE_TYPES,
 };
 export const ALL_SAFE_NODE_TYPES = safeNodeTypes;
+export type AllNodeTypes = keyof typeof ALL_NODE_TYPES;
 export type AllSafeNodeTypes = keyof typeof ALL_SAFE_NODE_TYPES;
 
 export const ALL_SAFE_NODE_NAMES: Record<
