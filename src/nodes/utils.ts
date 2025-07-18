@@ -49,9 +49,10 @@ function createWhiteNoiseNode() {
 export function createNode(
   type: CustomNodeTypesNames,
   position = { x: 0, y: 0 },
-  data: Record<string, unknown> = {}
+  data: Record<string, unknown> = {},
+  oldId?: string
 ) {
-  const id = nanoid();
+  const id = oldId ?? nanoid();
   const newNode = {
     id,
     type,

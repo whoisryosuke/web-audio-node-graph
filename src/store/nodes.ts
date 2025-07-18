@@ -44,7 +44,8 @@ export interface NodeStoreState {
   addNode: (
     type: CustomNodeTypesNames,
     position?: Vector2D,
-    data?: Partial<Node>
+    data?: Partial<Node>,
+    id?: string
   ) => Promise<string>;
   onNodesDelete: (deleted: Node[]) => void;
   onNodesChange: (changes: NodeChange<Node>[]) => void;
@@ -66,9 +67,10 @@ export const useNodeStore = create<NodeStoreState>()(
     addNode: async (
       type: CustomNodeTypesNames,
       position?: Vector2D,
-      data?: Partial<Node>
+      data?: Partial<Node>,
+      id?: string
     ) => {
-      const newNode = createNode(type, position, data) as Node;
+      const newNode = createNode(type, position, data, id) as Node;
 
       // Create the audio node
       await createAudioNode(type, newNode.id);
