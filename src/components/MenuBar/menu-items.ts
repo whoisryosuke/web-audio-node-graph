@@ -109,8 +109,9 @@ function openFilePicker(): void {
             newFile();
 
             // Import the data into store
-            nodes.forEach((node: NodeBase & { type: CustomNodeTypesNames }) =>
-              addNode(node.type, node.position, node.data, node.id)
+            nodes.forEach(
+              async (node: NodeBase & { type: CustomNodeTypesNames }) =>
+                await addNode(node.type, node.position, node.data, node.id)
             );
             edges.forEach((edge: Edge) => addEdge(edge));
 
