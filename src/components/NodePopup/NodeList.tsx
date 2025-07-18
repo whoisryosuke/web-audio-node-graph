@@ -2,6 +2,7 @@ import React from "react";
 import ALL_NODE_TYPES, {
   ALL_SAFE_NODE_NAMES,
   ALL_SAFE_NODE_TYPES,
+  type AllSafeNodeTypes,
   type CustomNodeTypesNames,
 } from "../../nodes";
 import { Box, Button, Icon, Stack } from "@chakra-ui/react";
@@ -15,6 +16,7 @@ import {
 } from "../../styles/colors";
 import { ALL_SAFE_NODE_ICONS } from "../../nodes/icons";
 import type { Edge } from "@xyflow/react";
+import NODE_CONNECTION_MAP from "../../nodes/io";
 
 type Props = {
   search: string;
@@ -39,14 +41,29 @@ const NodeList = ({ search, setSearch }: Props) => {
 
     // Connect to node if necessary
     console.log("creating connection", connectionPending, newNodeId);
-    const edge: Partial<Edge> = {
-      source: connectionPending?.node,
-      sourceHandle: null,
-      target: newNodeId,
-      targetHandle: connectionPending?.handleId,
-    };
-    addEdge(edge);
-    clearConnectionPending();
+    const { nodes } = useNodeStore.getState();
+    const targetNode = nodes.find((node) => node.id == newNodeId);
+    console.log("target node", targetNode);
+    if (connectionPending && targetNode && targetNode.type) {
+      // Figure out if connnection would be valid. Some nodes don't have inputs.
+      const io = NODE_CONNECTION_MAP[targetNode.type as AllSafeNodeTypes];
+      console.log("node io", io);
+      const targetHandleId = connectionPending.handleId ?? "node";
+      const isConnectionPossible = io.inputs.includes(targetHandleId);
+
+      if (isConnectionPossible) {
+        const edge: Partial<Edge> = {
+          source: connectionPending.node,
+          sourceHandle: null,
+          target: newNodeId,
+          targetHandle: connectionPending.handleId,
+        };
+        addEdge(edge);
+        clearConnectionPending();
+      } else {
+        console.log("Cant connect those nodes, just creating it instead");
+      }
+    }
 
     // Reset search
     setSearch("");

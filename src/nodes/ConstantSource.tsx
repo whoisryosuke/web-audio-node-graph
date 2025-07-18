@@ -10,6 +10,7 @@ import NodeInputField from "../components/nodes/NodeInputField";
 import NodeHandle from "../components/nodes/NodeHandle";
 import { ALL_SAFE_NODE_ICONS } from "./icons";
 import NodeOutput from "../components/nodes/NodeOutput";
+import type { NodeIO } from "./types";
 
 export type ConstantSourceData = {
   offset: number;
@@ -47,6 +48,11 @@ const ConstantSource = ({ id, data }: Props) => {
       </NodeContent>
     </NodeContainer>
   );
+};
+
+export const ConstantSourceIO: NodeIO = {
+  inputs: [],
+  outputs: ["node"],
 };
 
 export default ConstantSource;
