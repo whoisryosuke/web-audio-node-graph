@@ -98,7 +98,7 @@ const createWhiteNoiseNode = (id: string) => {
   audioNodes.set(id, { node });
 };
 
-export function createAudioNode(type: CustomNodeTypesNames, id: string) {
+export async function createAudioNode(type: CustomNodeTypesNames, id: string) {
   switch (type) {
     case "osc":
       createOscillatorAudioNode(id);
@@ -124,13 +124,13 @@ export function createAudioNode(type: CustomNodeTypesNames, id: string) {
       createWaveShaperNode(id);
       break;
     case "bitcrusher":
-      createBitcrusherWorklet(id);
+      await createBitcrusherWorklet(id);
       break;
     case "pink-noise":
-      createPinkNoiseWorklet(id);
+      await createPinkNoiseWorklet(id);
       break;
     case "moog":
-      createMoogWorklet(id);
+      await createMoogWorklet(id);
       break;
     default:
       break;
@@ -170,8 +170,8 @@ export function connectAudioNodes(
 ) {
   const sourceNode = audioNodes.get(source)?.node;
   const targetNode = audioNodes.get(target)?.node;
-  // console.log("connecting nodes", "source:", source, "target:", target);
-  // console.log("connecting nodes", "source:", sourceNode, "target:", targetNode);
+  console.log("connecting nodes", "source:", source, "target:", target);
+  console.log("connecting nodes", "source:", sourceNode, "target:", targetNode);
 
   // Check if we have a source node - kinda critical for everything
   if (!sourceNode) return;
@@ -189,8 +189,8 @@ export function connectAudioNodes(
   // Handle connections to node parameters vs nodes (aka "handles")
   const targetRef = getAudioParamsFromHandles(targetNode, targetHandle);
 
-  // Check if we have a target node
-  if (!targetNode) return;
+  console.log("connecting nodes - past checkpoint!", source, target, targetRef);
+
   // Connect to target node
   // @ts-expect-error - We use generic AudioNode type, which doesn't handle connecting to AudioParams (which some nodes do)
   sourceNode.connect(targetRef);
@@ -235,6 +235,14 @@ export function disconnectNodes(
 
   // Handle connections to node parameters vs nodes (aka "handles")
   const targetRef = getAudioParamsFromHandles(targetNode, targetHandle);
+  console.log(
+    "disconnecting nodes",
+    source,
+    target,
+    sourceNode,
+    targetNode,
+    targetRef
+  );
 
   // @ts-expect-error - TS can't grab the right overload in this case, asks for a number in my case
   sourceNode.disconnect(targetRef);

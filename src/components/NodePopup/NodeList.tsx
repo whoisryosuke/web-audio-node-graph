@@ -33,8 +33,8 @@ const NodeList = ({ search, setSearch }: Props) => {
   const { addNode, addEdge } = useNodeStore();
   const iconColor = useInputText();
 
-  const handleAddNode = (type: CustomNodeTypesNames) => {
-    const newNodeId = addNode(type, mousePosition, {});
+  const handleAddNode = async (type: CustomNodeTypesNames) => {
+    const newNodeId = await addNode(type, mousePosition, {});
 
     // Close popup
     setNodePopup(false);
