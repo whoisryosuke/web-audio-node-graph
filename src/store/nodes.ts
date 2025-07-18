@@ -53,6 +53,7 @@ export interface NodeStoreState {
   deleteEdge: (edgeId: Edge["id"]) => void;
   addEdge: (data: Partial<Edge>) => void;
   updateNode: <T>(id: string, data: T) => void;
+  updateNodePosition: (id: string, position: Vector2D) => void;
   newFile: () => void;
 
   selectedEdge: Edge;
@@ -135,6 +136,16 @@ export const useNodeStore = create<NodeStoreState>()(
           node.id === id ? { ...node, data: { ...node.data, ...data } } : node
         ),
       }));
+    },
+
+    updateNodePosition: (id: string, position: Vector2D) => {
+      set((state) => {
+        return {
+          nodes: state.nodes.map((node) =>
+            node.id == id ? { ...node, position } : node
+          ),
+        };
+      });
     },
 
     newFile: () => {
