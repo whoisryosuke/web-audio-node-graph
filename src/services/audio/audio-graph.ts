@@ -5,8 +5,10 @@ import { generateWaveShaperCurve } from "../../utils/audio/wave-shaper";
 import {
   createBitcrusherNode,
   createPinkNoiseNode,
+  createMoogNode,
   type BitcrusherNode,
   type PinkNoiseNode,
+  type MoogNode,
 } from "clawdio";
 import { createWhiteNoiseBufferNode } from "./noise";
 
@@ -81,9 +83,13 @@ const createBitcrusherWorklet = async (id: string) => {
 const createPinkNoiseWorklet = async (id: string) => {
   const pinkNoise = await createPinkNoiseNode(context, 4096);
 
-  console.log("pink noise", pinkNoise.node);
-
   audioNodes.set(id, { node: pinkNoise.node, instance: pinkNoise });
+};
+
+const createMoogWorklet = async (id: string) => {
+  const moog = await createMoogNode(context);
+
+  audioNodes.set(id, { node: moog.node, instance: moog });
 };
 
 const createWhiteNoiseNode = (id: string) => {
@@ -122,6 +128,9 @@ export function createAudioNode(type: CustomNodeTypesNames, id: string) {
       break;
     case "pink-noise":
       createPinkNoiseWorklet(id);
+      break;
+    case "moog":
+      createMoogWorklet(id);
       break;
     default:
       break;

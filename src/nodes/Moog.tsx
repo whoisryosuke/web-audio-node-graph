@@ -3,26 +3,29 @@ import NodeHeading from "../components/nodes/NodeHeading";
 import NodeContent from "../components/nodes/NodeContent";
 import NodeOutput from "../components/nodes/NodeOutput";
 import { ALL_SAFE_NODE_ICONS } from "./icons";
+import NodeInput from "../components/nodes/NodeInput";
 
-export type ConstantSourceData = {
-  offset: number;
+export type MoogData = {
+  resonance: number;
+  cu: number;
 };
 
 type Props = {
   id: string;
-  data: ConstantSourceData;
+  data: MoogData;
 };
 
-const PinkNoise = ({ id, data }: Props) => {
+const Moog = ({ id, data }: Props) => {
   return (
     <NodeContainer>
       <NodeHeading color="purple" icon={ALL_SAFE_NODE_ICONS["bitcrusher"]}>
-        Pink Noise Node
+        Moog Node
       </NodeHeading>
+      <NodeInput />
       <NodeOutput />
       <NodeContent></NodeContent>
     </NodeContainer>
   );
 };
 
-export default PinkNoise;
+export default Moog;
