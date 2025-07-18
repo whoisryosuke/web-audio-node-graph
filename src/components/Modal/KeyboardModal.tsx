@@ -91,7 +91,6 @@ const KeyboardModal = (props: Props) => {
   return (
     <Stack p={4}>
       <Heading size="lg">Keyboard Shortcuts</Heading>
-      <CloseButton position="absolute" top={2} right={2} />
       <Table.Root borderRadius={6} overflow="hidden">
         <Table.Header>
           <Table.Row>

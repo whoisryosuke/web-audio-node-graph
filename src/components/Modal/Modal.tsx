@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Dialog, Portal } from "@chakra-ui/react";
+import { Button, CloseButton, Dialog, Portal } from "@chakra-ui/react";
 import { useAppStore } from "../../store/app";
 import KeyboardModal from "./KeyboardModal";
 
@@ -12,6 +12,10 @@ type Props = {};
 const Modal = (props: Props) => {
   const { modal, modalVisible, toggleModal } = useAppStore();
   const ModalComponent = MODALS[modal];
+
+  const handleClose = () => {
+    toggleModal(false);
+  };
 
   return (
     <Dialog.Root
@@ -28,6 +32,12 @@ const Modal = (props: Props) => {
         <Dialog.Positioner>
           <Dialog.Content>
             <ModalComponent />
+            <CloseButton
+              position="absolute"
+              top={2}
+              right={2}
+              onClick={handleClose}
+            />
           </Dialog.Content>
         </Dialog.Positioner>
       </Portal>
