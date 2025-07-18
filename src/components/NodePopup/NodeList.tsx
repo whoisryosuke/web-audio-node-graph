@@ -5,7 +5,7 @@ import ALL_NODE_TYPES, {
   type AllSafeNodeTypes,
   type CustomNodeTypesNames,
 } from "../../nodes";
-import { Box, Button, Icon, Stack } from "@chakra-ui/react";
+import { Box, Button, Icon, Spinner, Stack, Text } from "@chakra-ui/react";
 import { useNodeStore } from "../../store/nodes";
 import { useAppStore } from "../../store/app";
 import {
@@ -101,9 +101,18 @@ const NodeList = ({ search, setSearch }: Props) => {
       </Button>
     );
   });
+
+  const loading = (
+    <Box display="flex" justifyContent="center" p={4}>
+      <Text fontSize="sm" color="GrayText">
+        Loading node...
+      </Text>
+      <Spinner size="md" />
+    </Box>
+  );
   return (
     <Stack maxHeight="300px" overflowY="scroll">
-      {buttons}
+      {disabled ? loading : buttons}
     </Stack>
   );
 };
