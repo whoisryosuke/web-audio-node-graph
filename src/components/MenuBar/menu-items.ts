@@ -3,6 +3,7 @@ import { useAppStore } from "../../store/app";
 import { useNodeStore } from "../../store/nodes";
 import type { CustomNodeTypesNames } from "../../nodes";
 import type { Edge } from "@xyflow/react";
+import { notifications } from "../ui/Toaster";
 
 const handleNewFile = () => {
   const { newFile } = useNodeStore.getState();
@@ -48,7 +49,8 @@ const handleExport = () => {
   const date = new Date(); // Get the current date
   const formattedDate = getFormattedDateForExport(date);
   console.log("date", formattedDate);
-  downloadLink.download = `web-audio-node-graph-${formattedDate}.json`;
+  const filename = `web-audio-node-graph-${formattedDate}.json`;
+  downloadLink.download = filename;
 
   // Simulate download
   document.body.appendChild(downloadLink);
@@ -57,6 +59,13 @@ const handleExport = () => {
   // Cleanup
   document.body.removeChild(downloadLink);
   URL.revokeObjectURL(downloadLink.href);
+
+  notifications.create({
+    title: "File exported",
+    description: `Check download folder for ${filename}`,
+    type: "success",
+    duration: 4,
+  });
 };
 
 function openFilePicker(): void {
@@ -70,10 +79,17 @@ function openFilePicker(): void {
     if (files && files.length > 0) {
       const selectedFile = files[0];
 
-      console.log("Selected file:", selectedFile.name, selectedFile.type);
-
+      // Check if it's JSON
       if (selectedFile.type != "application/json") {
-        // @TODO: notify user it wasn't JSON
+        console.log("notifications", notifications);
+        notifications.create({
+          title: "Couldn't import that file",
+          description:
+            "File wasn't JSON (.json) format. Maybe try renaming it?",
+          type: "error",
+          duration: 4,
+        });
+        console.error("not json!");
         return;
       }
 
@@ -90,21 +106,40 @@ function openFilePicker(): void {
             const { nodes = [], edges = [] } = json;
             const { addNode, addEdge, newFile } = useNodeStore.getState();
 
+            // Clear store of any node + edge data
             newFile();
 
+            // Import the data into store
             nodes.forEach((node: NodeBase & { type: CustomNodeTypesNames }) =>
               addNode(node.type, node.position, node.data, node.id)
             );
-
             edges.forEach((edge: Edge) => addEdge(edge));
+
+            notifications.create({
+              title: "File imported",
+              type: "success",
+            });
           } catch (e) {
             console.error("Error parsing JSON", e);
+            notifications.create({
+              title: "Couldn't parse file as JSON",
+              description:
+                "Couldn't parse JSON inside the file. Might have formatting issues.",
+              type: "error",
+              duration: 4,
+            });
           }
         }
       };
 
       reader.onerror = (error) => {
         console.error("Error reading file:", error);
+        notifications.create({
+          title: "Couldn't parse that file",
+          description:
+            "Couldn't load or read the file. Maybe check if file opens in text editor.",
+          type: "error",
+        });
       };
 
       // Read the file as text (or other formats like ArrayBuffer, DataURL)

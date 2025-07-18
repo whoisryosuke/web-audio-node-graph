@@ -18,6 +18,7 @@ import Footer from "./components/Footer/Footer";
 import MenuBar from "./components/MenuBar/MenuBar";
 import Modal from "./components/Modal/Modal";
 import type { Vector2D } from "./utils/types";
+import Toaster from "./components/ui/Toaster";
 
 // const selector = (store: NodeStoreState) => ({
 //   nodes: store.nodes,
@@ -86,6 +87,7 @@ function App() {
       <NodePopup />
       <Footer />
       <Modal />
+      <Toaster />
     </>
   );
 }
