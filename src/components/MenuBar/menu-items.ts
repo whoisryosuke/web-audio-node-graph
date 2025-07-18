@@ -81,7 +81,6 @@ function openFilePicker(): void {
 
       // Check if it's JSON
       if (selectedFile.type != "application/json") {
-        console.log("notifications", notifications);
         notifications.create({
           title: "Couldn't import that file",
           description:
