@@ -20,4 +20,5 @@ export const ALL_SAFE_NODE_ICONS: Record<
   bitcrusher: PiStepsBold,
   arpeggio: TbMusic,
   "white-noise": GiSoundWaves,
+  "pink-noise": GiSoundWaves,
 };

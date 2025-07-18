@@ -87,6 +87,9 @@ export function createNode(
     case "white-noise":
       baseData = createArpeggioNode();
       break;
+    case "pink-noise":
+      baseData = createArpeggioNode();
+      break;
   }
   newNode.data = {
     ...baseData,

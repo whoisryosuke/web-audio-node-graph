@@ -9,6 +9,7 @@ import WaveShaper from "./WaveShaper";
 import Bitcrusher from "./Bitcrusher";
 import Arpeggio from "./Arpeggio";
 import WhiteNoise from "./WhiteNoise";
+import PinkNoise from "./PinkNoise";
 
 const ALL_NODE_TYPES = {
   osc: Oscillator,
@@ -22,6 +23,7 @@ const ALL_NODE_TYPES = {
   bitcrusher: Bitcrusher,
   arpeggio: Arpeggio,
   "white-noise": WhiteNoise,
+  "pink-noise": PinkNoise,
 };
 const { output: _, ...safeNodeTypes } = {
   ...ALL_NODE_TYPES,
@@ -42,6 +44,7 @@ export const ALL_SAFE_NODE_NAMES: Record<
   bitcrusher: "Bitcrusher",
   arpeggio: "Arpeggio",
   "white-noise": "White Noise",
+  "pink-noise": "Pink Noise",
 };
 
 export type CustomNodeTypesNames = keyof typeof ALL_SAFE_NODE_TYPES;

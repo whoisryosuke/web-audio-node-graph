@@ -2,10 +2,15 @@ import type { Edge } from "@xyflow/react";
 import type { CustomNodeTypesNames } from "../../nodes";
 import { useNodeStore } from "../../store/nodes";
 import { generateWaveShaperCurve } from "../../utils/audio/wave-shaper";
-import { createBitcrusherNode, type BitcrusherNode } from "clawdio";
+import {
+  createBitcrusherNode,
+  createPinkNoiseNode,
+  type BitcrusherNode,
+  type PinkNoiseNode,
+} from "clawdio";
 import { createWhiteNoiseBufferNode } from "./noise";
 
-type CustomNodes = BitcrusherNode;
+type CustomNodes = BitcrusherNode | PinkNoiseNode;
 
 type AudioSetup<T> = {
   node: AudioNode;
@@ -73,6 +78,14 @@ const createBitcrusherWorklet = async (id: string) => {
   audioNodes.set(id, { node: bitcrusher.node, instance: bitcrusher });
 };
 
+const createPinkNoiseWorklet = async (id: string) => {
+  const pinkNoise = await createPinkNoiseNode(context, 4096);
+
+  console.log("pink noise", pinkNoise.node);
+
+  audioNodes.set(id, { node: pinkNoise.node, instance: pinkNoise });
+};
+
 const createWhiteNoiseNode = (id: string) => {
   const node = createWhiteNoiseBufferNode(context);
 
@@ -106,6 +119,9 @@ export function createAudioNode(type: CustomNodeTypesNames, id: string) {
       break;
     case "bitcrusher":
       createBitcrusherWorklet(id);
+      break;
+    case "pink-noise":
+      createPinkNoiseWorklet(id);
       break;
     default:
       break;
