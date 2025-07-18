@@ -46,17 +46,15 @@ const NodeList = ({ search, setSearch }: Props) => {
     setNodePopup(false);
 
     // Connect to node if necessary
-    console.log("creating connection", connectionPending, newNodeId);
     const { nodes } = useNodeStore.getState();
     const targetNode = nodes.find((node) => node.id == newNodeId);
-    console.log("target node", targetNode);
     if (connectionPending && targetNode && targetNode.type) {
       // Figure out if connnection would be valid. Some nodes don't have inputs.
       const io = NODE_CONNECTION_MAP[targetNode.type as AllSafeNodeTypes];
-      console.log("node io", io);
       const targetHandleId = connectionPending.handleId ?? "node";
       const isConnectionPossible = io.inputs.includes(targetHandleId);
 
+      // Create the connection if possible
       if (isConnectionPossible) {
         const edge: Partial<Edge> = {
           source: connectionPending.node,
@@ -66,8 +64,6 @@ const NodeList = ({ search, setSearch }: Props) => {
         };
         addEdge(edge);
         clearConnectionPending();
-      } else {
-        console.log("Cant connect those nodes, just creating it instead");
       }
     }
 
