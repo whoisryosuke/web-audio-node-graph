@@ -36,7 +36,11 @@ const NodeList = ({ search, setSearch }: Props) => {
 
   const handleAddNode = async (type: CustomNodeTypesNames) => {
     setDisabled(true);
-    const newNodeId = await addNode(type, mousePosition, {});
+    const newNodeId = await addNode(
+      type,
+      connectionPending ? connectionPending.position : mousePosition,
+      {}
+    );
 
     // Close popup
     setNodePopup(false);

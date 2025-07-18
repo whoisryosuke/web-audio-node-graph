@@ -17,6 +17,7 @@ import { useAppStore } from "./store/app";
 import Footer from "./components/Footer/Footer";
 import MenuBar from "./components/MenuBar/MenuBar";
 import Modal from "./components/Modal/Modal";
+import type { Vector2D } from "./utils/types";
 
 // const selector = (store: NodeStoreState) => ({
 //   nodes: store.nodes,
@@ -44,11 +45,13 @@ function App() {
       setNodePopup(true);
 
       // Save last node info so we can connect later
+      console.log("connectionState", connectionState);
       if (!connectionState.fromNode || !connectionState.fromHandle) return;
       setConnectionPending({
         node: connectionState.fromNode.id,
         handleId: connectionState.fromHandle.id,
         handleType: connectionState.fromHandle.type,
+        position: { ...connectionState.to } as Vector2D,
       });
     }
   }, []);

@@ -9,6 +9,7 @@ export type ConnectionPendingState = {
   node: string;
   handleId: Handle["id"];
   handleType: HandleType;
+  position: Vector2D;
 };
 
 export interface AppStoreState {
