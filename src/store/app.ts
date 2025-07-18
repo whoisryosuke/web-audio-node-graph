@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import type { Vector2D } from "../utils/types";
 import type { ConnectionState, HandleType } from "@xyflow/react";
-import type { Handle } from "@xyflow/system";
+import type { Handle, Viewport } from "@xyflow/system";
 
 export type ModalOptions = "keyboard";
 export type ConnectionPendingState = {
@@ -28,6 +28,9 @@ export interface AppStoreState {
 
   mousePosition: Vector2D;
   setMousePosition: (mousePosition: Vector2D) => void;
+
+  viewport: Viewport;
+  setViewport: (viewport: Viewport) => void;
 }
 
 export const useAppStore = create<AppStoreState>()(
@@ -71,6 +74,16 @@ export const useAppStore = create<AppStoreState>()(
     setMousePosition: (mousePosition: Vector2D) =>
       set({
         mousePosition,
+      }),
+
+    viewport: {
+      x: 0,
+      y: 0,
+      zoom: 1,
+    },
+    setViewport: (viewport: Viewport) =>
+      set({
+        viewport,
       }),
   }))
 );

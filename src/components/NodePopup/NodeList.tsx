@@ -30,17 +30,26 @@ const NodeList = ({ search, setSearch }: Props) => {
     setNodePopup,
     connectionPending,
     clearConnectionPending,
+    viewport,
   } = useAppStore();
   const { addNode, addEdge } = useNodeStore();
   const iconColor = useInputText();
 
   const handleAddNode = async (type: CustomNodeTypesNames) => {
     setDisabled(true);
-    const newNodeId = await addNode(
-      type,
-      connectionPending ? connectionPending.position : mousePosition,
-      {}
-    );
+
+    // If new node from connection, use that position, otherwise mouse
+    const basePosition = connectionPending
+      ? connectionPending.position
+      : mousePosition;
+
+    // Offset position based on viewport placement
+    const position = {
+      x: basePosition.x - viewport.x,
+      y: basePosition.y - viewport.y,
+    };
+
+    const newNodeId = await addNode(type, position, {});
 
     // Close popup
     setNodePopup(false);

@@ -108,7 +108,7 @@ export const useNodeStore = create<NodeStoreState>()(
 
     addEdge: (data: EdgeData) => {
       const id = nanoid(6);
-      const edge = { id, ...data } as Edge;
+      const edge = { id, type: "default", ...data } as Edge;
 
       console.log(
         "connecting nodes",
