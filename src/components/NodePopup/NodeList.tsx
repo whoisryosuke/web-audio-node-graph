@@ -4,13 +4,14 @@ import ALL_NODE_TYPES, {
   ALL_SAFE_NODE_TYPES,
   type CustomNodeTypesNames,
 } from "../../nodes";
-import { Box, Button, Stack } from "@chakra-ui/react";
+import { Box, Button, Icon, Stack } from "@chakra-ui/react";
 import { useNodeStore } from "../../store/nodes";
 import { useAppStore } from "../../store/app";
 import {
   useBackgroundColor,
   useBorderColor,
   useInputBg,
+  useInputText,
 } from "../../styles/colors";
 import { ALL_SAFE_NODE_ICONS } from "../../nodes/icons";
 
@@ -22,7 +23,7 @@ type Props = {
 const NodeList = ({ search, setSearch }: Props) => {
   const { mousePosition, setNodePopup } = useAppStore();
   const { addNode } = useNodeStore();
-  const iconColor = useInputBg();
+  const iconColor = useInputText();
 
   const handleAddNode = (type: CustomNodeTypesNames) => {
     addNode(type, mousePosition, {});
@@ -46,7 +47,7 @@ const NodeList = ({ search, setSearch }: Props) => {
   keys = keys.filter((key) => searchResults.includes(key));
 
   const buttons = keys.map((nodeType) => {
-    const Icon = ALL_SAFE_NODE_ICONS[nodeType];
+    const NodeIcon = ALL_SAFE_NODE_ICONS[nodeType];
     return (
       <Button
         key={nodeType}
@@ -54,7 +55,10 @@ const NodeList = ({ search, setSearch }: Props) => {
         justifyContent="flex-start"
         onClick={() => handleAddNode(nodeType)}
       >
-        <Icon color={iconColor} /> {ALL_SAFE_NODE_NAMES[nodeType]}
+        <Icon color={iconColor}>
+          <NodeIcon />
+        </Icon>{" "}
+        {ALL_SAFE_NODE_NAMES[nodeType]}
       </Button>
     );
   });
