@@ -19,6 +19,7 @@ import SampleDrumPad from "../components/SampleDrumPad/SampleDrumPad";
 import { Stack } from "@chakra-ui/react";
 import { ALL_SAFE_NODE_ICONS } from "./icons";
 import ArpeggioSampler from "../components/audio/ArpeggioSampler/ArpeggioSampler";
+import NodeOutput from "../components/nodes/NodeOutput";
 
 export type SampleData = {
   buffer: AudioBuffer;
@@ -61,7 +62,7 @@ const Arpeggio = ({ id, data }: Props) => {
         {data.buffer && <ArpeggioSampler playSample={playSample} />}
       </NodeContent>
 
-      <NodeHandle type="source" position={Position.Right} />
+      <NodeOutput />
     </NodeContainer>
   );
 };

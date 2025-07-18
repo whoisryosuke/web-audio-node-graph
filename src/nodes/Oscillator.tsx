@@ -10,6 +10,7 @@ import NodeInputField from "../components/nodes/NodeInputField";
 import Select from "../components/ui/Select";
 import NodeHandle from "../components/nodes/NodeHandle";
 import { ALL_SAFE_NODE_ICONS } from "./icons";
+import NodeOutput from "../components/nodes/NodeOutput";
 
 type OscillatorNodeData = {
   frequency: number;
@@ -43,6 +44,7 @@ const Oscillator = ({ id, data }: Props) => {
       <NodeHeading icon={ALL_SAFE_NODE_ICONS["osc"]}>
         Oscillator Node
       </NodeHeading>
+      <NodeOutput />
       <NodeContent>
         <NodeInputField label="Frequency" helper={`${data.frequency}Hz`}>
           <Slider
@@ -64,8 +66,6 @@ const Oscillator = ({ id, data }: Props) => {
           />
         </NodeInputField>
       </NodeContent>
-
-      <NodeHandle type="source" position={Position.Right} />
     </NodeContainer>
   );
 };

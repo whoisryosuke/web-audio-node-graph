@@ -37,18 +37,18 @@ const Analyser = ({ id, data }: Props) => {
   return (
     <NodeContainer>
       <NodeHeading>Analyser</NodeHeading>
+      <NodeInput />
+      <NodeOutput />
       <NodeContent>
         <Select
-          value={currentViz}
+          className="nodrag"
+          value={[currentViz]}
           onValueChange={handleChange}
           options={options}
           placeholder="Select an visualization"
         />
         <VizComponent key={currentViz} id={id} />
       </NodeContent>
-
-      <NodeHandle type="source" position={Position.Right} />
-      <NodeHandle type="target" position={Position.Left} />
     </NodeContainer>
   );
 };

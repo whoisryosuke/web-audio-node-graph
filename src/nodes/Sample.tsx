@@ -17,6 +17,7 @@ import Select from "../components/ui/Select";
 import SampleDrumPad from "../components/SampleDrumPad/SampleDrumPad";
 import { Stack } from "@chakra-ui/react";
 import { ALL_SAFE_NODE_ICONS } from "./icons";
+import NodeOutput from "../components/nodes/NodeOutput";
 
 export type SampleData = {
   buffer: AudioBuffer;
@@ -97,6 +98,7 @@ const Sample = ({ id, data }: Props) => {
       <NodeHeading icon={ALL_SAFE_NODE_ICONS["sample"]}>
         Sample Node
       </NodeHeading>
+      <NodeOutput />
       <NodeContent>
         <SampleDropzone buffer={data.buffer} setBuffer={setBuffer} />
         {data.buffer && (
@@ -112,8 +114,6 @@ const Sample = ({ id, data }: Props) => {
           </Stack>
         )}
       </NodeContent>
-
-      <NodeHandle type="source" position={Position.Right} />
     </NodeContainer>
   );
 };
