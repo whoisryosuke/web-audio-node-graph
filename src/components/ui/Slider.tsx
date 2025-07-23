@@ -1,6 +1,7 @@
 import React from "react";
 import { Slider as ChakraSlider, type SliderRootProps } from "@chakra-ui/react";
 import {
+  useBackgroundColor,
   useBorderColor,
   useButtonHoverBg,
   useInputBg,
@@ -11,7 +12,7 @@ import {
 type Props = SliderRootProps & {};
 
 const Slider = (props: Props) => {
-  const bg = useInputBg();
+  const bg = useBackgroundColor();
   const border = useInputBorder();
   const trackBg = useInputText();
   const buttonHoverBg = useButtonHoverBg();

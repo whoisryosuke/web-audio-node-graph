@@ -20,6 +20,7 @@ import { ALL_SAFE_NODE_ICONS } from "./icons";
 import NodeOutput from "../components/nodes/NodeOutput";
 import type { NodeIO } from "./types";
 import Slider from "../components/ui/Slider";
+import NodeInputField from "../components/nodes/NodeInputField";
 
 export type SampleData = {
   buffer: AudioBuffer;
@@ -117,18 +118,14 @@ const Sample = ({ id, data }: Props) => {
               options={options}
               placeholder="Select an piano type"
             />
-            <Text>Octave</Text>
-            <Stack direction="row">
+            <NodeInputField label="Octave" helper={octave}>
               <Slider
                 min={1}
                 max={8}
                 value={[octave]}
                 onValueChange={handleOctaveChange}
               />
-              <Text>
-                <strong>{octave}</strong>
-              </Text>
-            </Stack>
+            </NodeInputField>
             <PianoComponent key={currentViz} id={id} playSample={playSample} />
           </Stack>
         )}
