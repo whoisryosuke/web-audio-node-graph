@@ -12,7 +12,7 @@ import {
 } from "clawdio";
 import { createWhiteNoiseBufferNode } from "./noise";
 
-type CustomNodes = BitcrusherNode | PinkNoiseNode;
+type CustomNodes = BitcrusherNode | PinkNoiseNode | MediaRecorder;
 
 type AudioSetup<T> = {
   node: AudioNode;
@@ -92,6 +92,13 @@ const createMoogWorklet = async (id: string) => {
   audioNodes.set(id, { node: moog.node, instance: moog });
 };
 
+const createRecorder = (id: string) => {
+  const node = context.createMediaStreamDestination();
+  const mediaRecorder = new MediaRecorder(node.stream);
+
+  audioNodes.set(id, { node, instance: mediaRecorder });
+};
+
 const createWhiteNoiseNode = (id: string) => {
   const node = createWhiteNoiseBufferNode(context);
 
@@ -123,6 +130,10 @@ export async function createAudioNode(type: CustomNodeTypesNames, id: string) {
     case "wave-shaper":
       createWaveShaperNode(id);
       break;
+    case "recorder":
+      createRecorder(id);
+      break;
+    // Clawdio
     case "bitcrusher":
       await createBitcrusherWorklet(id);
       break;

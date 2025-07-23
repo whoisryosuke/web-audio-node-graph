@@ -11,6 +11,7 @@ import Arpeggio from "./Arpeggio";
 import WhiteNoise from "./WhiteNoise";
 import PinkNoise from "./PinkNoise";
 import Moog from "./Moog";
+import Recorder from "./Recorder";
 
 const ALL_NODE_TYPES = {
   osc: Oscillator,
@@ -26,6 +27,7 @@ const ALL_NODE_TYPES = {
   "white-noise": WhiteNoise,
   "pink-noise": PinkNoise,
   moog: Moog,
+  recorder: Recorder,
 };
 const { output: _, ...safeNodeTypes } = {
   ...ALL_NODE_TYPES,
@@ -50,6 +52,7 @@ export const ALL_SAFE_NODE_NAMES: Record<
   "white-noise": "White Noise",
   "pink-noise": "Pink Noise",
   moog: "Moog",
+  recorder: "Recorder",
 };
 
 export type CustomNodeTypesNames = keyof typeof ALL_SAFE_NODE_TYPES;

@@ -7,6 +7,7 @@ import { PiStepsBold, PiWaveSineBold } from "react-icons/pi";
 import { GiSoundWaves } from "react-icons/gi";
 import ClawdioIcon from "../components/icons/Clawdio";
 import type { CustomIconType } from "../components/icons/types";
+import { BsRecordCircleFill } from "react-icons/bs";
 
 export const ALL_SAFE_NODE_ICONS: Record<
   keyof typeof ALL_SAFE_NODE_TYPES,
@@ -24,4 +25,5 @@ export const ALL_SAFE_NODE_ICONS: Record<
   "white-noise": GiSoundWaves,
   "pink-noise": GiSoundWaves,
   moog: ClawdioIcon,
+  recorder: BsRecordCircleFill,
 };
