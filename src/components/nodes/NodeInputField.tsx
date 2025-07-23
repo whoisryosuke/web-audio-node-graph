@@ -5,7 +5,7 @@ import { Tooltip } from "../ui/Tooltip";
 
 type Props = {
   label: string;
-  helper?: string;
+  helper?: string | number;
   tooltip?: string | React.ReactNode;
 };
 
