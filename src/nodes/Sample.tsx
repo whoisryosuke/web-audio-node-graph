@@ -15,10 +15,11 @@ import {
 import { calculateDetune } from "../components/SamplePiano/utils";
 import Select from "../components/ui/Select";
 import SampleDrumPad from "../components/SampleDrumPad/SampleDrumPad";
-import { Stack } from "@chakra-ui/react";
+import { Stack, Text } from "@chakra-ui/react";
 import { ALL_SAFE_NODE_ICONS } from "./icons";
 import NodeOutput from "../components/nodes/NodeOutput";
 import type { NodeIO } from "./types";
+import Slider from "../components/ui/Slider";
 
 export type SampleData = {
   buffer: AudioBuffer;
@@ -39,6 +40,7 @@ type VizOptions = (typeof VIZ_OPTIONS)[number];
 
 const Sample = ({ id, data }: Props) => {
   const [currentViz, setCurrentViz] = useState<VizOptions>("Piano");
+  const [octave, setOctave] = useState<number>(4);
   const { updateNode } = useNodeStore();
 
   // Load a sample from disk (good for debug)
@@ -68,7 +70,8 @@ const Sample = ({ id, data }: Props) => {
     const node = getAudioNode(id) as AudioBufferSourceNode;
     if (!node) return;
 
-    node.detune.value = calculateDetune(note);
+    console.log("playinng note", note);
+    node.detune.value = calculateDetune(note, octave);
     console.log("starting buffer node", node);
     // Play the sound
     node.start();
@@ -87,6 +90,9 @@ const Sample = ({ id, data }: Props) => {
   const handleChange = (e: { value: string[] }) => {
     const newViz = e.value[0] as VizOptions;
     setCurrentViz(newViz);
+  };
+  const handleOctaveChange = (e: { value: number[] }) => {
+    setOctave(e.value[0]);
   };
   const options = VIZ_OPTIONS.map((nodeType) => ({
     value: nodeType,
@@ -111,6 +117,18 @@ const Sample = ({ id, data }: Props) => {
               options={options}
               placeholder="Select an piano type"
             />
+            <Text>Octave</Text>
+            <Stack direction="row">
+              <Slider
+                min={1}
+                max={8}
+                value={[octave]}
+                onValueChange={handleOctaveChange}
+              />
+              <Text>
+                <strong>{octave}</strong>
+              </Text>
+            </Stack>
             <PianoComponent key={currentViz} id={id} playSample={playSample} />
           </Stack>
         )}
