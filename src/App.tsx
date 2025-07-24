@@ -5,6 +5,7 @@ import {
   type ConnectionState,
   type Edge,
   type OnConnectEnd,
+  type Viewport,
 } from "@xyflow/react";
 import { useNodeStore, type NodeStoreState } from "./store/nodes";
 import ALL_NODE_TYPES from "./nodes";
@@ -19,6 +20,7 @@ import MenuBar from "./components/MenuBar/MenuBar";
 import Modal from "./components/Modal/Modal";
 import type { Vector2D } from "./utils/types";
 import Toaster from "./components/ui/Toaster";
+import NodeEdge from "./components/nodes/NodeEdge";
 
 // const selector = (store: NodeStoreState) => ({
 //   nodes: store.nodes,
@@ -28,8 +30,12 @@ import Toaster from "./components/ui/Toaster";
 //   addEdge: store.addEdge,
 // });
 
+const ALL_EDGE_TYPES = {
+  default: NodeEdge,
+};
+
 function App() {
-  const { setNodePopup, setConnectionPending } = useAppStore();
+  const { setNodePopup, setConnectionPending, setViewport } = useAppStore();
   const {
     nodes,
     edges,
@@ -65,6 +71,11 @@ function App() {
     console.log("edges deleted", edges);
   };
 
+  const onViewportChange = (viewport: Viewport) => {
+    console.log("event", viewport);
+    setViewport(viewport);
+  };
+
   return (
     <>
       <ReactFlow
@@ -75,8 +86,10 @@ function App() {
         onConnect={addEdge}
         onConnectEnd={onConnectEnd}
         nodeTypes={ALL_NODE_TYPES}
+        // edgeTypes={ALL_EDGE_TYPES}
         onEdgeClick={onEdgesClick}
         onEdgesDelete={onEdgesDelete}
+        onViewportChange={onViewportChange}
       >
         <Background color="#555" />
       </ReactFlow>
