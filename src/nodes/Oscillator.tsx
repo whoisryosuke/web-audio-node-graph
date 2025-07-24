@@ -23,7 +23,7 @@ type Props = {
   data: OscillatorNodeData;
 };
 
-const Oscillator = ({ id, data, position }: Props) => {
+const Oscillator = ({ id, data }: Props) => {
   const { updateNode } = useNodeStore();
 
   const setFrequency = (e: { value: number[] }) => {
@@ -41,7 +41,7 @@ const Oscillator = ({ id, data, position }: Props) => {
   );
 
   return (
-    <NodeContainer id={id} position={position}>
+    <NodeContainer>
       <NodeHeading icon={ALL_SAFE_NODE_ICONS["osc"]}>
         Oscillator Node
       </NodeHeading>

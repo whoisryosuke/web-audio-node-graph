@@ -11,3 +11,43 @@
 .react-flow__connectionline {
   transform: translateY(-100px);
 }
+
+/* Node animations */
+@keyframes FadeInNode {
+  0% {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+.react-flow__node > div {
+  animation-name: FadeInNode;
+  animation-duration: 0.42s;
+  animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+/* Edges animation */
+@keyframes LineFill {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+    stroke-dashoffset: 1000;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.react-flow__edge .react-flow__edge-path {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+
+  animation: LineFill 0.42s linear forwards;
+  animation-delay: 0.1s;
+}
